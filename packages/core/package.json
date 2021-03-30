@@ -1,0 +1,22 @@
+{
+  "name": "@avenger/core",
+  "version": "0.0.1",
+  "description": "",
+  "author": "ahwgs <ah_wgs@126.com>",
+  "homepage": "https://github.com/osdoc-dev/avenger#readme",
+  "license": "ISC",
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/osdoc-dev/avenger.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/osdoc-dev/avenger/issues"
+  },
+  "devDependencies": {}
+}

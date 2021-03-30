@@ -1,0 +1,54 @@
+{
+  "private": true,
+  "description": "",
+  "main": "lib/index.js",
+  "bin": {
+    "avenger": "./bin/avenger.js"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "clean": "lerna clean --y",
+    "bootstrap": "lerna bootstrap",
+    "commit": "git cz"
+  },
+  "devDependencies": {
+    "lerna": "^4.0.0",
+    "@osdoc-dev/eslint-config-preset-ts": "^0.2.1",
+    "@osdoc-dev/eslint-config-preset-prettier": "^0.2.1",
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "commitizen": "^4.2.3",
+    "cz-customizable": "^6.3.0",
+    "husky": "^4.3.8",
+    "lint-staged": "^10.5.3",
+    "typescript": "4.2.3"
+  },
+  "lint-staged": {
+    "*.{js,jsx,less,md,json}": [
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS "
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  }
+}
