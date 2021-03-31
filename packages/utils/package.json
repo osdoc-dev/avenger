@@ -5,6 +5,7 @@
   "author": "ahwgs <ah_wgs@126.com>",
   "homepage": "https://github.com/osdoc-dev/avenger#readme",
   "license": "MIT",
+  "main": "./lib/index.js",
   "files": [
     "lib"
   ],
@@ -18,5 +19,10 @@
   "bugs": {
     "url": "https://github.com/osdoc-dev/avenger/issues"
   },
-  "devDependencies": {}
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "ora": "^5.4.0",
+    "semver": "^7.3.5",
+    "strip-ansi": "^6.0.0"
+  }
 }

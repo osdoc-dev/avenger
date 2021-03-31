@@ -5,11 +5,7 @@
   "author": "ahwgs <ah_wgs@126.com>",
   "homepage": "https://github.com/osdoc-dev/avenger#readme",
   "license": "ISC",
-  "main": "lib/config.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
+  "main": "./lib/index.js",
   "files": [
     "lib"
   ],

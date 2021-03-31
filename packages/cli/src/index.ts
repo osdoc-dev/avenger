@@ -1,3 +1,1 @@
-export default () => {
-  console.log('cli build 123 ....')
-}
+export * from './common'

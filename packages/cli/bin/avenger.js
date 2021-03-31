@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
-console.log('avenger')
+const { checkNodeVersion } = require('../lib')
+const pkg = require('../package.json')
 
-const build = require('../lib')
+// check node version
+checkNodeVersion(pkg.engines.node, pkg.name)
 
-build()
+console.log('avenger', pkg.engines.node, pkg.name)

@@ -4,7 +4,8 @@
   "description": "",
   "author": "ahwgs <ah_wgs@126.com>",
   "homepage": "https://github.com/osdoc-dev/avenger#readme",
-  "license": "ISC",
+  "license": "MIT",
+  "main": "./lib/index.js",
   "files": [
     "lib"
   ],
