@@ -1288,10 +1288,10 @@
     jsonc-eslint-parser "^1.0.1"
     yaml-eslint-parser "^0.3.2"
 
-"@osdoc-dev/eslint-config-preset-basic@^0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@osdoc-dev/eslint-config-preset-basic/-/eslint-config-preset-basic-0.2.2.tgz#0f7081f7d7021f047ecf49a22b17caf9c71d66c2"
-  integrity sha512-VpWD/wj0FdOpPxFV+VRMeccDY5A9s4gDX6ADB45V5VL4lVseHRA3umzOAMIrcKTmMSURDdW5yW3V3LMrOcBLpw==
+"@osdoc-dev/eslint-config-preset-basic@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@osdoc-dev/eslint-config-preset-basic/-/eslint-config-preset-basic-0.2.3.tgz#55e3f88657ee253243ca5be0e55b6af02a68dc1b"
+  integrity sha512-/Dcqu1fOl1c1R5kP/qU6xyT5kS7GP8y+Dqi/pHBEMTiA3r9c2Eb7MGl/7kWwFWsSasohUIoyDrnX018BbpUTxw==
   dependencies:
     eslint "^7.22.0"
     eslint-config-airbnb "^16.0.2"
@@ -1311,10 +1311,10 @@
     prettier-plugin-jsdoc "^0.3.0"
     yaml-eslint-parser "^0.3.2"
 
-"@osdoc-dev/eslint-config-preset-prettier@^0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@osdoc-dev/eslint-config-preset-prettier/-/eslint-config-preset-prettier-0.2.2.tgz#a8e3bd65e6abd01d51be7c5f91002ef9be343ab4"
-  integrity sha512-TQzBdQgqU3StGepm8bnrMeaQWNOS/ybCxaLy6wrhE9V1dAJnDXZ7ZtBreB3zJWIhSJsgi1x6hgdcrwgEVwik4g==
+"@osdoc-dev/eslint-config-preset-prettier@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@osdoc-dev/eslint-config-preset-prettier/-/eslint-config-preset-prettier-0.2.3.tgz#a28ec5aeb3e54a69ea373b4ab6e9576c5df961ca"
+  integrity sha512-Gfk/DHxZmMaHt18cUYOAXXTLGcxMRvKP8aRq7gO9i8ZwNbw1XWQoTVzyoM1N9ZSd/FXUewZxi5t2X/JQPubWAg==
   dependencies:
     "@osdoc-dev/eslint-config-preset-react" "^0.0.13"
     "@osdoc-dev/eslint-config-preset-vue" "^0.0.13"
@@ -1339,12 +1339,12 @@
     "@typescript-eslint/parser" "^4.17.0"
     eslint "^7.22.0"
 
-"@osdoc-dev/eslint-config-preset-ts@^0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@osdoc-dev/eslint-config-preset-ts/-/eslint-config-preset-ts-0.2.2.tgz#7686a2075076c8aafffea5e751b7e742851084be"
-  integrity sha512-2HSoqZZdl5AiWkFeppK9XveTVRx44Opn594nbh715tfhChpduz/dgHoSKmTJccTO30ZPWmY1TTcDZCVbEZz8RQ==
+"@osdoc-dev/eslint-config-preset-ts@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@osdoc-dev/eslint-config-preset-ts/-/eslint-config-preset-ts-0.2.3.tgz#05467506468b1de93ec27535781fac837c028a39"
+  integrity sha512-xzGHz3EraVQgyo3nv6j6xQuJaiUndrSs8UFToNxyeU28mnIj0JpHXX3ppAivGrokeJ6OQw3ooBdiZjIHT4Se4g==
   dependencies:
-    "@osdoc-dev/eslint-config-preset-basic" "^0.2.2"
+    "@osdoc-dev/eslint-config-preset-basic" "^0.2.3"
     "@typescript-eslint/eslint-plugin" "^4.17.0"
     "@typescript-eslint/parser" "^4.17.0"
     eslint "^7.22.0"

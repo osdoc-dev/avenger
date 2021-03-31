@@ -14,8 +14,8 @@
   },
   "devDependencies": {
     "lerna": "^4.0.0",
-    "@osdoc-dev/eslint-config-preset-ts": "^0.2.2",
-    "@osdoc-dev/eslint-config-preset-prettier": "^0.2.2",
+    "@osdoc-dev/eslint-config-preset-ts": "^0.2.3",
+    "@osdoc-dev/eslint-config-preset-prettier": "^0.2.3",
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
     "commitizen": "^4.2.3",
