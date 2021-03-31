@@ -1,18 +1,16 @@
 {
-  "name": "@avenger/types",
+  "name": "@avenger/cli",
   "version": "0.0.1",
-  "description": "> TODO: description",
+  "description": "",
   "author": "ahwgs <ah_wgs@126.com>",
   "homepage": "https://github.com/osdoc-dev/avenger#readme",
   "license": "ISC",
-  "main": "lib/types.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
   "files": [
     "lib"
   ],
+  "bin": {
+    "avenger": "./bin/avenger.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/osdoc-dev/avenger.git"

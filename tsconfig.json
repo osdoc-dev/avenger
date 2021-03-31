@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "strict": true,
+    "composite": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "pretty": true,
+    "noImplicitAny": false, // 是否默认禁用 any
+    "removeComments": true, // 是否移除注释
+    "forceConsistentCasingInFileNames": true //禁止对同一个文件的不一致的引用。
+  }
+}

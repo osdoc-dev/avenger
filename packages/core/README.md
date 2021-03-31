@@ -1,4 +1,1 @@
 # @avenger/core
-
-
-## Usage
