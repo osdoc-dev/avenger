@@ -6,6 +6,7 @@
   "homepage": "https://github.com/osdoc-dev/avenger#readme",
   "license": "MIT",
   "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
   "files": [
     "lib"
   ],
@@ -19,5 +20,16 @@
   "bugs": {
     "url": "https://github.com/osdoc-dev/avenger/issues"
   },
-  "devDependencies": {}
+  "dependencies": {
+    "@avenger/config": "^0.0.1",
+    "@avenger/shared": "0.0.1",
+    "@avenger/utils": "^0.0.1",
+    "@babel/core": "7.12.3",
+    "@babel/register": "7.12.1",
+    "lodash": "^4.17.21",
+    "rollup": "^2.44.0"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.168"
+  }
 }

@@ -20,6 +20,10 @@
 `ECMAScript Module` 使用 `import export` 管理依赖
 ，可以被依赖分析以及 `Tree-Shaking`。支持动态加载 `import()`
 
+## 开发
 
+```
+lerna add module-1 --scope=@avenger/cli
+```
 
 

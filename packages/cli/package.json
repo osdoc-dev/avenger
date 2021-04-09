@@ -6,6 +6,7 @@
   "homepage": "https://github.com/osdoc-dev/avenger#readme",
   "license": "MIT",
   "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
   "files": [
     "lib"
   ],
@@ -26,7 +27,12 @@
     "node": "^12.0.0 || >= 14.0.0"
   },
   "dependencies": {
+    "@avenger/core": "^0.0.1",
+    "@avenger/shared": "^0.0.1",
+    "@avenger/utils": "^0.0.1",
     "commander": "^7.2.0",
-    "@avenger/utils": "*"
+    "envinfo": "^7.7.4",
+    "minimist": "^1.2.5",
+    "update-notifier": "^5.1.0"
   }
 }

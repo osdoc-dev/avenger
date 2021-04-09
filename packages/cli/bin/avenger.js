@@ -1,9 +1,13 @@
 #!/usr/bin/env node
+const updater = require('update-notifier')
+const { checkNodeVersion, registerCommand } = require('../lib')
+const package = require('../package.json')
 
-const { checkNodeVersion } = require('../lib')
-const pkg = require('../package.json')
+// 检查 node 版本
+checkNodeVersion(package.engines.node, package.name)
 
-// check node version
-checkNodeVersion(pkg.engines.node, pkg.name)
+// 检查更新
+updater({ pkg: package }).notify({ defer: true })
 
-console.log('avenger', pkg.engines.node, pkg.name)
+// 注册命令
+registerCommand()

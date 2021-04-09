@@ -1,11 +1,12 @@
 {
-  "name": "@avenger/share",
+  "name": "@avenger/shared",
   "version": "0.0.1",
   "description": "> TODO: description",
   "author": "ahwgs <ah_wgs@126.com>",
   "homepage": "https://github.com/osdoc-dev/avenger#readme",
   "license": "ISC",
   "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
   "files": [
     "lib"
   ],
@@ -19,5 +20,7 @@
   "bugs": {
     "url": "https://github.com/osdoc-dev/avenger/issues"
   },
-  "devDependencies": {}
+  "dependencies": {
+    "rollup": "^2.44.0"
+  }
 }

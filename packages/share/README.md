@@ -1,1 +1,0 @@
-# @avenger/share

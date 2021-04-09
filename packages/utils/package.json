@@ -6,6 +6,7 @@
   "homepage": "https://github.com/osdoc-dev/avenger#readme",
   "license": "MIT",
   "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
   "files": [
     "lib"
   ],
@@ -23,6 +24,7 @@
     "chalk": "^4.1.0",
     "ora": "^5.4.0",
     "semver": "^7.3.5",
+    "slash2": "^2.0.0",
     "strip-ansi": "^6.0.0"
   }
 }
