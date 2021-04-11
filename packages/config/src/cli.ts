@@ -3,11 +3,21 @@
  * @Author: ahwgs
  * @Date: 2021-04-01 00:19:05
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-04-09 15:18:42
+ * @Last Modified time: 2021-04-09 15:46:14
  */
 
 import { IBuildConfigOpt, ICliOpt, DEFAULT_FILES, CLI_CONFIG_FILES } from '@avenger/shared'
-import { getExistFile, info } from '@avenger/utils'
+import { getExistFile, validateSchema, error as errorLog } from '@avenger/utils'
+import schema from './config-schema'
+
+const validateConfig = config =>
+  new Promise<void>((resolve, reject) => {
+    validateSchema(config, schema, (msg: string) => {
+      errorLog(`invalid preset options: ${msg}`)
+      reject(msg)
+    })
+    resolve()
+  })
 
 const getConfigModule = (filePath: string) => {
   const module = require(filePath)
@@ -24,9 +34,8 @@ const getConfigByFile = ({ cwd }): IBuildConfigOpt => {
     })
     if (!configFile) return {}
     const config = getConfigModule(configFile)
-    info(JSON.stringify(config))
     // 校验配置文件格式
-
+    validateConfig(config)
     return config
   } catch (error) {
     console.log(error)
