@@ -21,6 +21,6 @@
     "url": "https://github.com/osdoc-dev/avenger/issues"
   },
   "dependencies": {
-    "rollup": "^2.44.0"
+    "@avenger/utils": "^0.0.1"
   }
 }

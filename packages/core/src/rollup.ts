@@ -3,15 +3,32 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 20:23:14
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-04-09 14:54:33
+ * @Last Modified time: 2021-04-27 19:56:31
  */
-// import { rollup, watch } from 'rollup'
-import { IRollupOptions } from '@avenger/shared'
-// import { getRollupConfig } from '@avenger/config'
+import { IRollupBuildOpt } from '@avenger/shared'
+import { getRollupConfig } from '@avenger/config'
+import { info } from '@avenger/utils'
+import { rollup, watch as rollupWatch } from 'rollup'
 
-export const rollupBuild = async (opt?: IRollupOptions) => {
+export const rollupBuild = async (opt: IRollupBuildOpt) => {
   console.log(' ', opt)
-  // const rollupConfig = getRollupConfig()
-  // const res = await rollup(rollupConfig)
-  // console.log('res', res)
+  const { type, watch } = opt
+  const rollupConfig = getRollupConfig(opt) || {}
+
+  console.log('rollupConfig', rollupConfig)
+  if (watch) {
+    const watcher = rollupWatch([
+      {
+        ...rollupConfig,
+        watch: {},
+      },
+    ])
+    watcher.on('event', event => {
+      if (event.code === 'START') info(`[${type}] Rebuild since file changed`)
+    })
+  } else {
+    const { output, ...input } = rollupConfig as any
+    const bundle = await rollup(input)
+    await bundle.write(output)
+  }
 }

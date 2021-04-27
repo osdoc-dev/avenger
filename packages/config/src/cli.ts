@@ -7,7 +7,7 @@
  */
 
 import { IBuildConfigOpt, ICliOpt, DEFAULT_FILES, CLI_CONFIG_FILES } from '@avenger/shared'
-import { getExistFile, validateSchema, error as errorLog } from '@avenger/utils'
+import { getExistFile, validateSchema, error as errorLog, lodash, log } from '@avenger/utils'
 import schema from './config-schema'
 
 const validateConfig = config =>
@@ -38,19 +38,22 @@ const getConfigByFile = ({ cwd }): IBuildConfigOpt => {
     validateConfig(config)
     return config
   } catch (error) {
-    console.log(error)
+    log(`get config with file error:${error.message}`)
     return {}
   }
 }
 
 // 获取用户配置
-export const getBundleOpts = (opt: ICliOpt) => {
+export const getBundleOpts = (opt: ICliOpt): IBuildConfigOpt => {
   const { cwd, inlineConfig } = opt
   // 获取默认入口
   const entry = getExistFile({ cwd, files: DEFAULT_FILES, returnRelative: true })
-  console.log('entry', entry)
 
   const config = getConfigByFile({ cwd })
-  console.log('config', config, inlineConfig)
   // 将配置文件与行内配置合并
+  const configRet = lodash.merge(config, inlineConfig) as IBuildConfigOpt
+
+  if (configRet.esm && typeof configRet.esm === 'string') configRet.esm = { type: configRet.esm }
+
+  return { ...configRet, entry }
 }

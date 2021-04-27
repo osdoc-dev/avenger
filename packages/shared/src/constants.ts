@@ -2,8 +2,9 @@
  * @Author: ahwgs
  * @Date: 2021-04-01 00:20:14
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-04-02 20:26:13
+ * @Last Modified time: 2021-04-27 19:49:50
  */
+import { IBundleOutTypeMapProps } from './types'
 
 // 支持的配置文件名称
 export const CLI_CONFIG_FILES = ['.avengerrc.js', '.avengerrc.ts', '.avenger.config.js', '.avenger.config.ts']
@@ -15,3 +16,8 @@ export const BundleTypeMap = {
   babel: 'babel',
   rollup: 'rollup',
 }
+
+export const BundleOutTypeMap = {
+  esm: 'esm',
+  cjs: 'cjs',
+} as IBundleOutTypeMapProps

@@ -2,19 +2,40 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 09:42:11
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-04-09 15:08:41
+ * @Last Modified time: 2021-04-27 20:16:41
  */
 
-import { ModuleFormat } from 'rollup'
+export type TBundleType = 'rollup' | 'babel'
 
-export type BundleType = 'rollup' | 'babel'
+export type TBundleOutType = 'esm' | 'cjs'
 
-export interface IEsmOpt {}
+export interface IBundleOutTypeMapProps {
+  [propName: string]: TBundleOutType
+}
+
+export interface IBundleOutType {
+  type: TBundleType
+  file?: string
+}
+
+export interface IEsmOpt extends IBundleOutType {
+  importLibToEs?: boolean
+  minify?: boolean
+}
+
+export interface IRollupBuildOpt {
+  cwd: string
+  entry: string
+  type: TBundleOutType
+  buildConfig: IBuildConfigOpt
+  watch?: boolean
+  importLibToEs?: boolean
+}
 
 export interface IBuildConfigOpt {
-  entry?: string | string[] // 输入
+  entry?: string // 输入
   outFile?: string // 输出
-  esm?: string
+  esm?: TBundleType | IEsmOpt | false // 支持配置 'esm' | {type:'esm'} | false
   extraBabelPlugins?: any[]
   extraBabelPresets?: any[]
 }
@@ -32,6 +53,10 @@ export interface IRollupOptions {
 export interface IGetBabelConfigProps {
   target: 'browser' | 'node'
   nodeVersion?: number
-  type?: ModuleFormat
+  type?: TBundleOutType
   typescript?: boolean
+}
+
+export interface IObjectProps {
+  [propName: string]: string
 }
