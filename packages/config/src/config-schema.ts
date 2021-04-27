@@ -15,6 +15,7 @@ const schema = createSchema(joi =>
     cjs: joi.string(),
     outFile: joi.string(),
     entry: [joi.string()],
+    disableTypeCheck: joi.boolean(),
   })
 )
 
