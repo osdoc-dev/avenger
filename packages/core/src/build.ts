@@ -3,7 +3,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 09:45:43
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-04-27 19:43:21
+ * @Last Modified time: 2021-04-27 22:41:59
  */
 import path from 'path'
 import { ICliOpt, CLI_CONFIG_FILES, IBuildConfigOpt, IEsmOpt, BundleTypeMap, BundleOutTypeMap } from '@avenger/shared'
@@ -25,13 +25,14 @@ export const build = (opt?: ICliOpt) => {
   // 删除编译产物
   rimraf.sync(path.join(cwd, 'dist'))
 
-  const { esm, entry } = buildConfig || ({} as IBuildConfigOpt)
+  const { esm, entry } = buildConfig as IBuildConfigOpt
+
+  console.log('配置文件获取配置', buildConfig)
 
   // build esm
   if (esm) {
     const esmOpt = esm as IEsmOpt
-    const { importLibToEs = true } = esmOpt || {}
     if (esmOpt.type === BundleTypeMap.rollup)
-      rollupBuild({ cwd, type: BundleOutTypeMap.esm, entry, watch, buildConfig, importLibToEs })
+      rollupBuild({ cwd, type: BundleOutTypeMap.esm, entry, watch, buildConfig })
   }
 }

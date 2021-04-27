@@ -9,5 +9,7 @@ module.exports = {
     'space-before-function-paren': 0,
     'global-require': 0,
     'import/no-dynamic-require': 0,
+    '@typescript-eslint/indent': 0,
+    indent: 0,
   },
 }

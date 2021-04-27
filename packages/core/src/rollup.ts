@@ -3,7 +3,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 20:23:14
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-04-27 19:56:31
+ * @Last Modified time: 2021-04-27 22:48:39
  */
 import { IRollupBuildOpt } from '@avenger/shared'
 import { getRollupConfig } from '@avenger/config'
@@ -15,7 +15,6 @@ export const rollupBuild = async (opt: IRollupBuildOpt) => {
   const { type, watch } = opt
   const rollupConfig = getRollupConfig(opt) || {}
 
-  console.log('rollupConfig', rollupConfig)
   if (watch) {
     const watcher = rollupWatch([
       {
