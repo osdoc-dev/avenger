@@ -1,1 +1,1 @@
-# @avenger/cli
+# @osdoc-dev/avenger-cli

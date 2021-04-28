@@ -6,9 +6,16 @@
  * @Last Modified time: 2021-04-27 22:41:59
  */
 import path from 'path'
-import { ICliOpt, CLI_CONFIG_FILES, IBuildConfigOpt, IEsmOpt, BundleTypeMap, BundleOutTypeMap } from '@avenger/shared'
-import { getBundleOpts } from '@avenger/config'
-import { info, rimraf } from '@avenger/utils'
+import {
+  ICliOpt,
+  CLI_CONFIG_FILES,
+  IBuildConfigOpt,
+  IEsmOpt,
+  BundleTypeMap,
+  BundleOutTypeMap,
+} from '@osdoc-dev/avenger-shared'
+import { getBundleOpts } from '@osdoc-dev/avenger-config'
+import { info, rimraf } from '@osdoc-dev/avenger-utils'
 import registerBabel from './register-babel'
 import { rollupBuild } from './rollup'
 

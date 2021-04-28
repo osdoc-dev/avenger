@@ -4,9 +4,9 @@
  * @Last Modified by: ahwgs
  * @Last Modified time: 2021-04-27 22:50:06
  */
-import { semver, error } from '@avenger/utils'
+import { semver, error } from '@osdoc-dev/avenger-utils'
 import minimist, { ParsedArgs } from 'minimist'
-import { ICliOpt } from '@avenger/shared'
+import { ICliOpt } from '@osdoc-dev/avenger-shared'
 // 检查node版本,避免某些 api 不适配
 export const checkNodeVersion = (needVerison: string, packageName: string) => {
   if (!semver.satisfies(process.version, needVerison, { includePrerelease: true })) {

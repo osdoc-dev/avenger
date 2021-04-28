@@ -1,1 +1,1 @@
-# @avenger/utils
+# @osdoc-dev/avenger-utils

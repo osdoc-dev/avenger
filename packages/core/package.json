@@ -1,5 +1,5 @@
 {
-  "name": "@avenger/core",
+  "name": "@osdoc-dev/avenger-core",
   "version": "0.0.1",
   "description": "",
   "author": "ahwgs <ah_wgs@126.com>",
@@ -24,9 +24,9 @@
     "url": "https://github.com/osdoc-dev/avenger/issues"
   },
   "dependencies": {
-    "@avenger/config": "^0.0.1",
-    "@avenger/shared": "^0.0.1",
-    "@avenger/utils": "^0.0.1",
+    "@osdoc-dev/avenger-config": "^0.0.1",
+    "@osdoc-dev/avenger-shared": "^0.0.1",
+    "@osdoc-dev/avenger-utils": "^0.0.1",
     "@babel/core": "7.12.3",
     "@babel/register": "7.12.1",
     "lodash": "^4.17.21",

@@ -5,7 +5,7 @@
  * @Last Modified by: ahwgs
  * @Last Modified time: 2021-04-09 15:02:28
  */
-import { IGetBabelConfigProps } from '@avenger/shared'
+import { IGetBabelConfigProps } from '@osdoc-dev/avenger-shared'
 
 export const getBabelConfig = (opt: IGetBabelConfigProps) => {
   const { target, nodeVersion = 6, type, typescript } = opt || {}

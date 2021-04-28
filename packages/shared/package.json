@@ -1,5 +1,5 @@
 {
-  "name": "@avenger/shared",
+  "name": "@osdoc-dev/avenger-shared",
   "version": "0.0.1",
   "description": "> TODO: description",
   "author": "ahwgs <ah_wgs@126.com>",
@@ -24,6 +24,6 @@
     "url": "https://github.com/osdoc-dev/avenger/issues"
   },
   "dependencies": {
-    "@avenger/utils": "^0.0.1"
+    "@osdoc-dev/avenger-utils": "^0.0.1"
   }
 }

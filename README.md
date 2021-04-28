@@ -5,7 +5,7 @@
 ## 如何使用
 
 ```TypeScript
-yarn add @avenger/cli 
+yarn add @osdoc-dev/avenger-cli 
 ```
 
 ## 配置

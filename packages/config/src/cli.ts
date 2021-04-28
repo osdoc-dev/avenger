@@ -6,8 +6,8 @@
  * @Last Modified time: 2021-04-09 15:46:14
  */
 
-import { IBuildConfigOpt, ICliOpt, DEFAULT_FILES, CLI_CONFIG_FILES } from '@avenger/shared'
-import { getExistFile, validateSchema, error as errorLog, lodash, log } from '@avenger/utils'
+import { IBuildConfigOpt, ICliOpt, DEFAULT_FILES, CLI_CONFIG_FILES } from '@osdoc-dev/avenger-shared'
+import { getExistFile, validateSchema, error as errorLog, lodash, log } from '@osdoc-dev/avenger-utils'
 import schema from './config-schema'
 
 const validateConfig = config =>

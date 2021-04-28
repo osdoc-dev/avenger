@@ -5,8 +5,8 @@
  * @Last Modified time: 2021-04-09 15:04:02
  */
 import path from 'path'
-import { slash } from '@avenger/utils'
-import { getBabelConfig } from '@avenger/config'
+import { slash } from '@osdoc-dev/avenger-utils'
+import { getBabelConfig } from '@osdoc-dev/avenger-config'
 
 interface IRegisterBabelProps {
   cwd: string

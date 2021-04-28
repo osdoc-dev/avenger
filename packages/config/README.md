@@ -1,1 +1,1 @@
-# @avenger/config
+# @osdoc-dev/avenger-config

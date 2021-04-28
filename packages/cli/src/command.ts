@@ -2,13 +2,13 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 00:22:55
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-04-28 15:23:41
+ * @Last Modified time: 2021-04-28 16:04:52
  */
 
 import path from 'path'
 import program from 'commander'
-import { getPackageJson, chalk } from '@avenger/utils'
-import { build } from '@avenger/core'
+import { getPackageJson, chalk } from '@osdoc-dev/avenger-utils'
+import { build } from '@osdoc-dev/avenger-core'
 import envinfo from 'envinfo'
 import { getBuildArguments } from './common'
 // 注册命令
@@ -39,7 +39,7 @@ export const registerCommand = () => {
             System: ['OS', 'CPU'],
             Binaries: ['Node', 'Yarn', 'npm'],
             Browsers: ['Chrome', 'Edge', 'Firefox', 'Safari'],
-            npmPackages: '/**/{typescript,*@avenger*,@avenger/*/}',
+            npmPackages: '/**/{typescript,*@osdoc-dev*,@osdoc-dev/*/}',
             npmGlobalPackages: [packageJson.name],
           },
           {

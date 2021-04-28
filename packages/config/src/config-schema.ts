@@ -1,5 +1,5 @@
-import { createSchema } from '@avenger/utils'
-import { BundleTypeMap } from '@avenger/shared'
+import { createSchema } from '@osdoc-dev/avenger-utils'
+import { BundleTypeMap } from '@osdoc-dev/avenger-shared'
 
 const schema = createSchema(joi =>
   joi.object({

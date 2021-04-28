@@ -1,5 +1,5 @@
 {
-  "name": "@avenger/config",
+  "name": "@osdoc-dev/avenger-config",
   "version": "0.0.1",
   "description": "> TODO: description",
   "author": "ahwgs <ah_wgs@126.com>",
@@ -24,8 +24,8 @@
     "url": "https://github.com/osdoc-dev/avenger/issues"
   },
   "dependencies": {
-    "@avenger/shared": "^0.0.1",
-    "@avenger/utils": "^0.0.1",
+    "@osdoc-dev/avenger-shared": "^0.0.1",
+    "@osdoc-dev/avenger-utils": "^0.0.1",
     "@babel/plugin-proposal-class-properties": "7.12.1",
     "@babel/plugin-proposal-decorators": "7.12.1",
     "@babel/plugin-proposal-do-expressions": "7.12.1",
