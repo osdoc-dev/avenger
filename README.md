@@ -2,28 +2,68 @@
 
 集成打包工具
 
-## 愿景
+## 如何使用
 
-- 我想把一个 `React`/`Vue` 组件打成 `umd/cjs/esm` 去使用
-- 我想把一堆函数封装成一个公共包，在 `node/brower` 使用
-
-## 知识普及
-
-### umd
-
-同时兼容 `CJS` `AMD` ，支持直接在浏览器使用 `<script src="lib.umd.js"></script>` 加载 
-
-### cjs
-
-`CommonJS` , 只能在 `Nodejs` 使用，使用 `require("module")` 加载模块
-### esm
-`ECMAScript Module` 使用 `import export` 管理依赖
-，可以被依赖分析以及 `Tree-Shaking`。支持动态加载 `import()`
-
-## 开发
-
-```
-lerna add module-1 --scope=@avenger/cli
+```TypeScript
+yarn add @avenger/cli 
 ```
 
+## 配置
 
+新建配置文件 `'.avengerrc.js', '.avengerrc.ts', '.avenger.config.js', '.avenger.config.ts'`
+
+```typescript
+export default {
+  esm: {
+    type: "rollup",
+    sourcemap: true,
+  },
+  outFile: "demo",
+};
+```
+
+### 配置项
+
+- **entry**
+
+文件打包入口
+
+- **outFile**
+
+输出文件名
+
+- **esm**
+
+打包 `ESModule` 配置
+
+可配置为："rollup" | "babel" | { type, outFile, ...其他子项目  } | false
+
+配置为 `rollup` 则使用 `rollup` 构建
+
+配置为 `babel` 则使用 `babel` 构建
+
+对于 `esm` 的配置，也可使用对象的形式，如下
+
+- **esm.type**
+
+配置 `esm` 使用 `rollup` 还是 `babel`
+
+- **esm.outFile**
+
+配置 `esm` 输出的文件名称，优先级大于上面的那个 `outFile`
+
+- **esm.minify**
+
+配置`esm` 是否需要压缩，一般不需要配置
+
+- **esm.sourcemap**
+
+配置打包文件是否需要输出 `sourcemap` 文件
+
+- **disableTypeCheck**
+
+打包时禁用 `typescript` 类型检查
+
+- **typescriptOpts**
+
+透传给 `rollup-plugin-typescript2` 插件的配置

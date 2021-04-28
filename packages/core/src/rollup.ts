@@ -11,7 +11,6 @@ import { info } from '@avenger/utils'
 import { rollup, watch as rollupWatch } from 'rollup'
 
 export const rollupBuild = async (opt: IRollupBuildOpt) => {
-  console.log(' ', opt)
   const { type, watch } = opt
   const rollupConfig = getRollupConfig(opt) || {}
 
