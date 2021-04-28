@@ -49,6 +49,11 @@ export const getBundleOpts = (opt: ICliOpt): IBuildConfigOpt => {
   // 获取默认入口
   const entry = getExistFile({ cwd, files: DEFAULT_FILES, returnRelative: true })
 
+  if (!entry) {
+    errorLog(`未找到文件入口，entry url：${entry}`)
+    process.exit(1)
+  }
+
   const config = getConfigByFile({ cwd })
   // 将配置文件与行内配置合并
   const configRet = lodash.merge(config, inlineConfig) as IBuildConfigOpt

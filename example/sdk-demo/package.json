@@ -1,0 +1,13 @@
+{
+  "name": "sdk-demo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "../../packages/cli/bin/avenger.js build",
+    "build:w": "../../packages/cli/bin/avenger.js build -w"
+  },
+  "devDependencies": {
+    "typescript": "^4.2.4"
+  }
+}

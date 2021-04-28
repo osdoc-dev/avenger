@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 21:35:08
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-04-27 23:10:55
+ * @Last Modified time: 2021-04-28 17:25:31
  */
 import path from 'path'
 import { IRollupBuildOpt, IBuildConfigOpt, BundleOutTypeMap, IEsmOpt } from '@osdoc-dev/avenger-shared'
@@ -14,6 +14,7 @@ import typescript2 from 'rollup-plugin-typescript2'
 import json from '@rollup/plugin-json'
 import babel from '@rollup/plugin-babel'
 import tempDir from 'temp-dir'
+import { getExistFile, error } from '@osdoc-dev/avenger-utils'
 
 interface IGetPluginOpt {
   isTs: boolean
@@ -61,6 +62,18 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions => {
   const entryExt = path.extname(entry)
   // 是否是ts
   const isTypeScript = entryExt === '.ts' || entryExt === '.tsx'
+
+  if (isTypeScript) {
+    const tsConfigFile = getExistFile({
+      cwd,
+      files: ['tsconfig.json'],
+      returnRelative: false,
+    })
+    if (!tsConfigFile) {
+      error('未找到 tsconfig.json 文件')
+      process.exit(1)
+    }
+  }
 
   // 打包输出的文件名
   const outFileName = outFile || path.basename(entry, entryExt)

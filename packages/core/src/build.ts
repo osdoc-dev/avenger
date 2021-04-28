@@ -34,8 +34,6 @@ export const build = (opt?: ICliOpt) => {
 
   const { esm, entry } = buildConfig as IBuildConfigOpt
 
-  console.log('配置文件获取配置', buildConfig)
-
   // build esm
   if (esm) {
     const esmOpt = esm as IEsmOpt
