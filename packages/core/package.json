@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@avenger/config": "^0.0.1",
-    "@avenger/shared": "0.0.1",
+    "@avenger/shared": "^0.0.1",
     "@avenger/utils": "^0.0.1",
     "@babel/core": "7.12.3",
     "@babel/register": "7.12.1",
