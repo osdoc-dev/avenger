@@ -13,5 +13,6 @@
     "noImplicitAny": false, // 是否默认禁用 any
     "removeComments": true, // 是否移除注释
     "forceConsistentCasingInFileNames": true //禁止对同一个文件的不一致的引用。
-  }
+  },
+  "exclude": ["node_modules", "lib", "packages/*/node_modules", "packages/*/lib"]
 }

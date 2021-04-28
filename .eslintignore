@@ -7,3 +7,6 @@
 **/node_modules
 /script
 # rollup.config.js
+/lib
+packages/*/node_modules
+packages/*/lib
