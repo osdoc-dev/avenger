@@ -13,6 +13,7 @@ import svgr from '@svgr/rollup'
 import typescript2 from 'rollup-plugin-typescript2'
 import json from '@rollup/plugin-json'
 import babel from '@rollup/plugin-babel'
+import tempDir from 'temp-dir'
 
 interface IGetPluginOpt {
   isTs: boolean
@@ -32,6 +33,7 @@ function getPlugin(opt?: IGetPluginOpt) {
           cwd,
           clean: true,
           tsconfig: path.join(cwd, 'tsconfig.json'),
+          cacheRoot: `${tempDir}/.rollup_plugin_typescript2_cache`,
           tsconfigDefaults: {
             compilerOptions: {
               declaration: true,
@@ -39,8 +41,7 @@ function getPlugin(opt?: IGetPluginOpt) {
           },
           tsconfigOverride: {
             compilerOptions: {
-              target: 'esnext',
-              module: 'esnext',
+              module: 'ES2015',
             },
           },
           check: !disableTypeCheck,
@@ -88,10 +89,12 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions => {
 
   switch (type) {
     case BundleOutTypeMap.cjs:
+      return {}
     case BundleOutTypeMap.esm:
       output = {
         format: type,
-        file: path.join(cwd, `dist/${(esm && (esm as IEsmOpt).file) || `${outFileName}.esm`}.js`),
+        sourcemap: esm && (esm as IEsmOpt).sourcemap,
+        file: path.join(cwd, `dist/${(esm && (esm as IEsmOpt).outFile) || `${outFileName}.esm`}.js`),
       }
       // 压缩
       plugins = [...getPlugin(pluginOpt), ...(esm && (esm as IEsmOpt)?.minify ? [terser(terserOpts)] : [])]

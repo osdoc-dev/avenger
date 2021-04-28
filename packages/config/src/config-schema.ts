@@ -4,18 +4,20 @@ import { BundleTypeMap } from '@avenger/shared'
 const schema = createSchema(joi =>
   joi.object({
     esm: [
+      joi.boolean(),
       joi.string(),
       joi.object({
         type: joi.string().valid(BundleTypeMap.babel, BundleTypeMap.rollup).required(),
-        file: joi.string(),
-        importLibToEs: joi.boolean(),
+        outFile: joi.string(),
         minify: joi.boolean(),
+        sourcemap: joi.boolean(),
       }),
     ],
     cjs: joi.string(),
     outFile: joi.string(),
     entry: [joi.string()],
     disableTypeCheck: joi.boolean(),
+    typescriptOpts: joi.object(),
   })
 )
 

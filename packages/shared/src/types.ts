@@ -15,12 +15,12 @@ export interface IBundleOutTypeMapProps {
 
 export interface IBundleOutType {
   type: TBundleType
-  file?: string
+  outFile?: string
 }
 
 export interface IEsmOpt extends IBundleOutType {
-  importLibToEs?: boolean
   minify?: boolean
+  sourcemap?: boolean
 }
 
 // 用户配置
@@ -28,8 +28,6 @@ export interface IBuildConfigOpt {
   entry?: string // 输入
   outFile?: string // 输出
   esm?: TBundleType | IEsmOpt | false // 支持配置 'esm' | {type:'esm'} | false
-  extraBabelPlugins?: any[]
-  extraBabelPresets?: any[]
   disableTypeCheck?: boolean
   typescriptOpts?: Object
 }
