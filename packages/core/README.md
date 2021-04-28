@@ -1,1 +1,1 @@
-# @avenger/core
+# @osdoc-dev/avenger-core

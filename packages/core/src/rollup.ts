@@ -5,9 +5,9 @@
  * @Last Modified by: ahwgs
  * @Last Modified time: 2021-04-27 22:48:39
  */
-import { IRollupBuildOpt } from '@avenger/shared'
-import { getRollupConfig } from '@avenger/config'
-import { info } from '@avenger/utils'
+import { IRollupBuildOpt } from '@osdoc-dev/avenger-shared'
+import { getRollupConfig } from '@osdoc-dev/avenger-config'
+import { info } from '@osdoc-dev/avenger-utils'
 import { rollup, watch as rollupWatch } from 'rollup'
 
 export const rollupBuild = async (opt: IRollupBuildOpt) => {

@@ -1,1 +1,1 @@
-# @avenger/shared
+# @osdoc-dev/avenger-shared

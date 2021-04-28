@@ -5,7 +5,7 @@
  * @Last Modified time: 2021-04-27 23:10:55
  */
 import path from 'path'
-import { IRollupBuildOpt, IBuildConfigOpt, BundleOutTypeMap, IEsmOpt } from '@avenger/shared'
+import { IRollupBuildOpt, IBuildConfigOpt, BundleOutTypeMap, IEsmOpt } from '@osdoc-dev/avenger-shared'
 import { RollupOptions, OutputOptions } from 'rollup'
 import { terser } from 'rollup-plugin-terser'
 import url from '@rollup/plugin-url'
