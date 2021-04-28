@@ -8,8 +8,12 @@
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "files": [
-    "lib"
+    "lib",
+    "bin"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "bin": {
     "avenger": "./bin/avenger.js"
   },

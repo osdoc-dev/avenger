@@ -8,9 +8,10 @@
     "clean": "lerna clean --y && yarn clean:lib",
     "bootstrap": "lerna bootstrap",
     "commit": "git cz",
-    "build": "tsc -b -w packages/**",
+    "build:watch": "tsc -b -w packages/**",
     "clean:lib": "rimraf packages/**/lib packages/**/tsconfig.tsbuildinfo",
-    "debug": "node --inspect-brk packages/cli/bin/avenger.js"
+    "debug": "node --inspect-brk packages/cli/bin/avenger.js",
+    "build": "tsc -b packages/**"
   },
   "devDependencies": {
     "lerna": "^4.0.0",
