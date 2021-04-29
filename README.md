@@ -60,6 +60,34 @@ export default {
 
 配置打包文件是否需要输出 `sourcemap` 文件
 
+- **cjs**
+
+打包 `CommonJs` 配置
+
+可配置为："rollup" | "babel" | { type, outFile, ...其他子项目  } | false
+
+配置为 `rollup` 则使用 `rollup` 构建
+
+配置为 `babel` 则使用 `babel` 构建
+
+对于 `cjs` 的配置，也可使用对象的形式，如下
+
+- **cjs.type**
+
+配置 `cjs` 使用 `rollup` 还是 `babel`
+
+- **cjs.outFile**
+
+配置 `cjs` 输出的文件名称，优先级大于上面的那个 `outFile`
+
+- **cjs.minify**
+
+配置`cjs` 是否需要压缩，一般不需要配置
+
+- **cjs.sourcemap**
+
+配置打包文件是否需要输出 `sourcemap` 文件
+
 - **disableTypeCheck**
 
 打包时禁用 `typescript` 类型检查

@@ -3,7 +3,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 20:23:14
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-04-27 22:48:39
+ * @Last Modified time: 2021-04-29 21:57:33
  */
 import { IRollupBuildOpt } from '@osdoc-dev/avenger-shared'
 import { getRollupConfig } from '@osdoc-dev/avenger-config'

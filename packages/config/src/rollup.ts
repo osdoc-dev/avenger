@@ -2,17 +2,17 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 21:35:08
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-04-28 17:25:31
+ * @Last Modified time: 2021-04-29 21:57:08
  */
 import path from 'path'
-import { IRollupBuildOpt, IBuildConfigOpt, BundleOutTypeMap, IEsmOpt } from '@osdoc-dev/avenger-shared'
+import { IRollupBuildOpt, IBuildConfigOpt, BundleOutTypeMap, IEsmOpt, ICjsOpt } from '@osdoc-dev/avenger-shared'
 import { RollupOptions, OutputOptions } from 'rollup'
 import { terser } from 'rollup-plugin-terser'
 import url from '@rollup/plugin-url'
 import svgr from '@svgr/rollup'
 import typescript2 from 'rollup-plugin-typescript2'
 import json from '@rollup/plugin-json'
-import babel from '@rollup/plugin-babel'
+import babel, { RollupBabelInputPluginOptions } from '@rollup/plugin-babel'
 import tempDir from 'temp-dir'
 import { getExistFile, error } from '@osdoc-dev/avenger-utils'
 
@@ -23,9 +23,19 @@ interface IGetPluginOpt {
   typescriptOpts: Object
 }
 
+function getBablePluginOpt() {
+  const ret = {
+    babelHelpers: 'bundled' as RollupBabelInputPluginOptions['babelHelpers'],
+  }
+  return ret
+}
+
 /** 获取插件配置 */
 function getPlugin(opt?: IGetPluginOpt) {
   const { isTs, cwd, disableTypeCheck, typescriptOpts } = opt || {}
+
+  // 获取 @rollup/plugin-babel 配置
+  const babelPluOpt = getBablePluginOpt()
 
   // rollup-plugin-typescript2
   const tsPlugin = isTs
@@ -51,13 +61,13 @@ function getPlugin(opt?: IGetPluginOpt) {
       ]
     : []
 
-  return [url(), svgr(), ...tsPlugin, babel(), json()]
+  return [url(), svgr(), ...tsPlugin, babel(babelPluOpt), json()]
 }
 
 export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions => {
   console.log('rollup 打包配置', opt)
   const { cwd, entry, type, buildConfig } = opt || {}
-  const { esm, outFile, disableTypeCheck = false, typescriptOpts = {} } = buildConfig as IBuildConfigOpt
+  const { esm, cjs, outFile, disableTypeCheck = false, typescriptOpts = {} } = buildConfig as IBuildConfigOpt
 
   const entryExt = path.extname(entry)
   // 是否是ts
@@ -102,7 +112,13 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions => {
 
   switch (type) {
     case BundleOutTypeMap.cjs:
-      return {}
+      output = {
+        format: type,
+        sourcemap: cjs && (cjs as ICjsOpt).sourcemap,
+        file: path.join(cwd, `dist/${(cjs && (cjs as ICjsOpt).outFile) || `${outFileName}`}.js`),
+      }
+      plugins = [...getPlugin(pluginOpt), ...(cjs && (cjs as ICjsOpt)?.minify ? [terser(terserOpts)] : [])]
+      return { output, input, plugins }
     case BundleOutTypeMap.esm:
       output = {
         format: type,

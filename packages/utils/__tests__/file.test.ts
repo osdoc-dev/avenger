@@ -1,6 +1,11 @@
+import { getExistFile } from '../src'
+
 describe('test avenger utils:file', () => {
   it('test getExistFile function', () => {
-    expect(1).toBe(1)
-    expect(2 + 2).toBe(4)
+    expect(getExistFile({ cwd: process.cwd(), files: ['tsconfig.json'], returnRelative: true })).toBe('tsconfig.json')
+    expect(getExistFile({ cwd: process.cwd(), files: ['tsconfig.json'], returnRelative: false })).toBe(
+      `${process.cwd()}/tsconfig.json`
+    )
+    expect(getExistFile({ cwd: process.cwd(), files: [], returnRelative: false })).toBe(undefined)
   })
 })

@@ -11,6 +11,7 @@ import {
   CLI_CONFIG_FILES,
   IBuildConfigOpt,
   IEsmOpt,
+  ICjsOpt,
   BundleTypeMap,
   BundleOutTypeMap,
 } from '@osdoc-dev/avenger-shared'
@@ -32,12 +33,19 @@ export const build = (opt?: ICliOpt) => {
   // 删除编译产物
   rimraf.sync(path.join(cwd, 'dist'))
 
-  const { esm, entry } = buildConfig as IBuildConfigOpt
+  const { esm, entry, cjs } = buildConfig as IBuildConfigOpt
 
   // build esm
   if (esm) {
     const esmOpt = esm as IEsmOpt
     if (esmOpt.type === BundleTypeMap.rollup)
       rollupBuild({ cwd, type: BundleOutTypeMap.esm, entry, watch, buildConfig })
+  }
+
+  // build cjs
+  if (cjs) {
+    const cjsOpt = cjs as ICjsOpt
+    if (cjsOpt.type === BundleTypeMap.rollup)
+      rollupBuild({ cwd, type: BundleOutTypeMap.cjs, entry, watch, buildConfig })
   }
 }

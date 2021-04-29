@@ -59,6 +59,7 @@ export const getBundleOpts = (opt: ICliOpt): IBuildConfigOpt => {
   const configRet = lodash.merge(config, inlineConfig) as IBuildConfigOpt
 
   if (configRet.esm && typeof configRet.esm === 'string') configRet.esm = { type: configRet.esm }
+  if (configRet.cjs && typeof configRet.cjs === 'string') configRet.cjs = { type: configRet.cjs }
 
   return { ...configRet, entry }
 }

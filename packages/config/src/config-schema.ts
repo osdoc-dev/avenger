@@ -13,7 +13,16 @@ const schema = createSchema(joi =>
         sourcemap: joi.boolean(),
       }),
     ],
-    cjs: joi.string(),
+    cjs: [
+      joi.boolean(),
+      joi.string(),
+      joi.object({
+        type: joi.string().valid(BundleTypeMap.babel, BundleTypeMap.rollup).required(),
+        outFile: joi.string(),
+        minify: joi.boolean(),
+        sourcemap: joi.boolean(),
+      }),
+    ],
     outFile: joi.string(),
     entry: [joi.string()],
     disableTypeCheck: joi.boolean(),
