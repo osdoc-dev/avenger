@@ -11,7 +11,8 @@
     "build:w": "tsc -b -w packages/**",
     "clean:lib": "rimraf packages/**/lib packages/**/tsconfig.tsbuildinfo",
     "debug": "node --inspect-brk packages/cli/bin/avenger.js",
-    "build": "tsc -b packages/**"
+    "build": "tsc -b packages/**",
+    "test": "jest"
   },
   "devDependencies": {
     "lerna": "^4.0.0",
@@ -28,7 +29,10 @@
     "tsconfig-paths": "^3.9.0",
     "@types/node": "^13.7.0",
     "ts-node-dev": "^1.1.6",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "jest": "^26.6.3",
+    "@types/jest": "^26.0.22",
+    "ts-jest": "^26.4.4"
   },
   "lint-staged": {
     "*.{js,jsx,less,md,json}": [
