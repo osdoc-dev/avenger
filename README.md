@@ -92,6 +92,14 @@ export default {
 
 打包时禁用 `typescript` 类型检查
 
-- **typescriptOpts**
+- **extraTypescriptPluginOpt**
 
 透传给 `rollup-plugin-typescript2` 插件的配置
+
+- **extraNodeResolvePluginOpt**
+
+透传给 `@rollup/plugin-node-resolve` 插件的配置
+
+- **extraRollupPlugins**
+
+拓展 `rollup plugins` 

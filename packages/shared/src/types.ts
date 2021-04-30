@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 09:42:11
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-04-29 21:57:23
+ * @Last Modified time: 2021-04-30 14:20:02
  */
 
 export type TBundleType = 'rollup' | 'babel'
@@ -35,7 +35,10 @@ export interface IBuildConfigOpt {
   esm?: TBundleType | IEsmOpt | false // 支持配置 'esm' | {type:'esm'} | false
   cjs?: TBundleType | ICjsOpt | false //
   disableTypeCheck?: boolean
-  typescriptOpts?: Object
+  extraTypescriptPluginOpt?: Object
+  /** 拓展 rollup plugins */
+  extraRollupPlugins?: any[]
+  extraNodeResolvePluginOpt?: Object
 }
 
 export interface IRollupBuildOpt {

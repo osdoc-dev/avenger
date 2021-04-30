@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 21:35:08
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-04-29 21:57:08
+ * @Last Modified time: 2021-04-30 14:28:44
  */
 import path from 'path'
 import { IRollupBuildOpt, IBuildConfigOpt, BundleOutTypeMap, IEsmOpt, ICjsOpt } from '@osdoc-dev/avenger-shared'
@@ -13,14 +13,19 @@ import svgr from '@svgr/rollup'
 import typescript2 from 'rollup-plugin-typescript2'
 import json from '@rollup/plugin-json'
 import babel, { RollupBabelInputPluginOptions } from '@rollup/plugin-babel'
+import commonjs from '@rollup/plugin-commonjs'
 import tempDir from 'temp-dir'
 import { getExistFile, error } from '@osdoc-dev/avenger-utils'
+import nodeResolve from '@rollup/plugin-node-resolve'
 
 interface IGetPluginOpt {
   isTs: boolean
   cwd: string
   disableTypeCheck?: boolean
-  typescriptOpts: Object
+  extraTypescriptPluginOpt: Object
+  extraRollupPlugins?: any[]
+  extensions?: string[]
+  extraNodeResolvePluginOpt: Object
 }
 
 function getBablePluginOpt() {
@@ -32,7 +37,15 @@ function getBablePluginOpt() {
 
 /** 获取插件配置 */
 function getPlugin(opt?: IGetPluginOpt) {
-  const { isTs, cwd, disableTypeCheck, typescriptOpts } = opt || {}
+  const {
+    isTs,
+    cwd,
+    disableTypeCheck,
+    extraTypescriptPluginOpt,
+    extraRollupPlugins,
+    extensions,
+    extraNodeResolvePluginOpt,
+  } = opt || {}
 
   // 获取 @rollup/plugin-babel 配置
   const babelPluOpt = getBablePluginOpt()
@@ -56,18 +69,37 @@ function getPlugin(opt?: IGetPluginOpt) {
             },
           },
           check: !disableTypeCheck,
-          ...(typescriptOpts || {}),
+          ...(extraTypescriptPluginOpt || {}),
         }),
       ]
     : []
 
-  return [url(), svgr(), ...tsPlugin, babel(babelPluOpt), json()]
+  return [
+    url(),
+    svgr(),
+    commonjs(),
+    nodeResolve({ mainFields: ['module', 'jsnext:main', 'main'], extensions, ...extraNodeResolvePluginOpt }),
+    ...tsPlugin,
+    babel(babelPluOpt),
+    json(),
+    ...extraRollupPlugins,
+  ]
 }
 
 export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions => {
   console.log('rollup 打包配置', opt)
   const { cwd, entry, type, buildConfig } = opt || {}
-  const { esm, cjs, outFile, disableTypeCheck = false, typescriptOpts = {} } = buildConfig as IBuildConfigOpt
+  const {
+    esm,
+    cjs,
+    outFile,
+    disableTypeCheck = false,
+    extraTypescriptPluginOpt = {},
+    extraRollupPlugins = [],
+    extraNodeResolvePluginOpt,
+  } = buildConfig as IBuildConfigOpt
+
+  const extensions = ['.js', '.jsx', '.ts', '.tsx', '.es6', '.es', '.mjs']
 
   const entryExt = path.extname(entry)
   // 是否是ts
@@ -107,7 +139,10 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions => {
     isTs: isTypeScript,
     cwd,
     disableTypeCheck,
-    typescriptOpts,
+    extraTypescriptPluginOpt,
+    extraRollupPlugins,
+    extensions,
+    extraNodeResolvePluginOpt,
   }
 
   switch (type) {
