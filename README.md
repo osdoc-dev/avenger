@@ -96,6 +96,8 @@ export default {
 
 透传给 `rollup-plugin-typescript2` 插件的配置
 
+注意：`declarationDir` 默认开启,并且默认输出到文件夹 `dist/types` 下
+
 - **extraNodeResolvePluginOpt**
 
 透传给 `@rollup/plugin-node-resolve` 插件的配置

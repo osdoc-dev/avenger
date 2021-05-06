@@ -18,6 +18,7 @@
     "module": "CommonJS", // 当前代码语法
     "declaration": true, // 是否自动创建类型声明文件
     "declarationMap": false,
+    "declarationDir": "dist/typess",
     "typeRoots": [
       // 指定某个文件夹的声明文件
       "node_modules/@types"

@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 21:35:08
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-04-30 14:28:44
+ * @Last Modified time: 2021-05-06 23:03:31
  */
 import path from 'path'
 import { IRollupBuildOpt, IBuildConfigOpt, BundleOutTypeMap, IEsmOpt, ICjsOpt } from '@osdoc-dev/avenger-shared'
@@ -58,9 +58,11 @@ function getPlugin(opt?: IGetPluginOpt) {
           clean: true,
           tsconfig: path.join(cwd, 'tsconfig.json'),
           cacheRoot: `${tempDir}/.rollup_plugin_typescript2_cache`,
+          useTsconfigDeclarationDir: true,
           tsconfigDefaults: {
             compilerOptions: {
               declaration: true,
+              declarationDir: 'dist/types',
             },
           },
           tsconfigOverride: {

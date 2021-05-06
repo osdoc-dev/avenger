@@ -1,10 +1,5 @@
 export default {
   esm: 'rollup',
-  cjs: {
-    type: 'rollup',
-    outFile: 'dddd',
-    sourcemap: true,
-    minify: true,
-  },
+  cjs: 'rollup',
   outFile: 'sdk-demo',
 }
