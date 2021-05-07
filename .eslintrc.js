@@ -11,5 +11,6 @@ module.exports = {
     'import/no-dynamic-require': 0,
     '@typescript-eslint/indent': 0,
     indent: 0,
+    'no-await-in-loop': 0,
   },
 }

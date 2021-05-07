@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 09:42:11
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-07 00:07:32
+ * @Last Modified time: 2021-05-08 00:17:35
  */
 
 export type TBundleType = 'rollup' | 'babel'
@@ -11,6 +11,10 @@ export type TBundleOutType = 'esm' | 'cjs' | 'umd'
 
 export interface IBundleOutTypeMapProps {
   [propName: string]: TBundleOutType
+}
+
+export interface IStringObject {
+  [prop: string]: string
 }
 
 export interface IBundleOutType {
@@ -33,6 +37,7 @@ export interface IUmdOpt {
   sourcemap?: boolean
   minFile?: boolean
   outFile?: string
+  globals?: IStringObject
 }
 
 // 用户配置
@@ -47,6 +52,9 @@ export interface IBuildConfigOpt {
   /** 拓展 rollup plugins */
   extraRollupPlugins?: any[]
   extraNodeResolvePluginOpt?: Object
+  include?: string // commonjs 插件
+  extraReplacePluginOpts?: Object // replace 插件
+  extraInjectPluginOpts?: Object // inject 插件
 }
 
 export interface IRollupBuildOpt {
@@ -77,4 +85,10 @@ export interface IGetBabelConfigProps {
 
 export interface IObjectProps {
   [propName: string]: string
+}
+
+export interface IPackageJson {
+  dependencies?: Object
+  peerDependencies?: Object
+  name?: string
 }

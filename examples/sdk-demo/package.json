@@ -1,18 +1,21 @@
 {
   "name": "sdk-demo",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
   "scripts": {
     "build": "../../packages/cli/bin/avenger.js build",
     "build:w": "../../packages/cli/bin/avenger.js build -w",
-    "dev": "parcel index.html"
+    "dev:umd": "parcel index.umd.html",
+    "dev:esm": "parcel index.esm.html"
   },
   "devDependencies": {
+    "@types/node": "^15.0.2",
     "parcel-bundler": "^1.12.5",
     "typescript": "^4.2.4"
   },
   "dependencies": {
     "the-answer": "^1.0.0"
-  }
+  },
+  "module": "./dist/sdk.esm.js",
+  "main": "./dist/sdk.js"
 }

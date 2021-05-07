@@ -3,7 +3,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 09:45:43
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-07 00:15:09
+ * @Last Modified time: 2021-05-07 23:21:08
  */
 import path from 'path'
 import {
@@ -54,5 +54,5 @@ export const build = (opt?: ICliOpt) => {
   }
 
   // build umd
-  if (umd && umd.name) rollupBuild({ cwd, type: BundleOutTypeMap.umd, entry, watch, buildConfig })
+  if (umd) rollupBuild({ cwd, type: BundleOutTypeMap.umd, entry, watch, buildConfig })
 }

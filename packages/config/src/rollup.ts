@@ -2,10 +2,19 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 21:35:08
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-07 00:17:08
+ * @Last Modified time: 2021-05-08 00:20:06
  */
 import path from 'path'
-import { IRollupBuildOpt, IBuildConfigOpt, BundleOutTypeMap, IEsmOpt, ICjsOpt } from '@osdoc-dev/avenger-shared'
+import { lodash, getExistFile, error, getPackageJson } from '@osdoc-dev/avenger-utils'
+import {
+  IRollupBuildOpt,
+  IBuildConfigOpt,
+  BundleOutTypeMap,
+  IEsmOpt,
+  ICjsOpt,
+  IUmdOpt,
+  IPackageJson,
+} from '@osdoc-dev/avenger-shared'
 import { RollupOptions, OutputOptions } from 'rollup'
 import { terser } from 'rollup-plugin-terser'
 import url from '@rollup/plugin-url'
@@ -15,8 +24,9 @@ import json from '@rollup/plugin-json'
 import babel, { RollupBabelInputPluginOptions } from '@rollup/plugin-babel'
 import commonjs from '@rollup/plugin-commonjs'
 import tempDir from 'temp-dir'
-import { getExistFile, error } from '@osdoc-dev/avenger-utils'
 import nodeResolve from '@rollup/plugin-node-resolve'
+import replace, { RollupReplaceOptions } from '@rollup/plugin-replace'
+import inject, { RollupInjectOptions } from '@rollup/plugin-inject'
 
 interface IGetPluginOpt {
   isTs: boolean
@@ -26,6 +36,9 @@ interface IGetPluginOpt {
   extraRollupPlugins?: any[]
   extensions?: string[]
   extraNodeResolvePluginOpt: Object
+  include?: string
+  extraReplacePluginOpts?: Object
+  extraInjectPluginOpts?: Object
 }
 
 function getBablePluginOpt() {
@@ -45,6 +58,9 @@ function getPlugin(opt?: IGetPluginOpt) {
     extraRollupPlugins,
     extensions,
     extraNodeResolvePluginOpt,
+    include = /node_modules/,
+    extraReplacePluginOpts,
+    extraInjectPluginOpts,
   } = opt || {}
 
   // 获取 @rollup/plugin-babel 配置
@@ -76,28 +92,38 @@ function getPlugin(opt?: IGetPluginOpt) {
       ]
     : []
 
+  const hasReplace = extraReplacePluginOpts && Object.keys(extraReplacePluginOpts || {}).length > 0
+
+  const hasInject = extraInjectPluginOpts && Object.keys(extraInjectPluginOpts || {}).length > 0
+
   return [
     url(),
     svgr(),
-    commonjs(),
+    commonjs({ include }),
     nodeResolve({ mainFields: ['module', 'jsnext:main', 'main'], extensions, ...extraNodeResolvePluginOpt }),
     ...tsPlugin,
     babel(babelPluOpt),
     json(),
+    ...(hasReplace ? [replace({ ...extraReplacePluginOpts } as RollupReplaceOptions)] : []),
+    ...(hasInject ? [inject({ ...extraInjectPluginOpts } as RollupInjectOptions)] : []),
     ...extraRollupPlugins,
   ]
 }
 
-export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions => {
+export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
   const { cwd, entry, type, buildConfig } = opt || {}
   const {
     esm,
     cjs,
+    umd,
     outFile,
     disableTypeCheck = false,
     extraTypescriptPluginOpt = {},
     extraRollupPlugins = [],
     extraNodeResolvePluginOpt,
+    extraReplacePluginOpts,
+    extraInjectPluginOpts,
+    include,
   } = buildConfig as IBuildConfigOpt
 
   const extensions = ['.js', '.jsx', '.ts', '.tsx', '.es6', '.es', '.mjs']
@@ -105,6 +131,8 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions => {
   const entryExt = path.extname(entry)
   // 是否是ts
   const isTypeScript = entryExt === '.ts' || entryExt === '.tsx'
+
+  const pkg = getPackageJson(cwd) as IPackageJson
 
   if (isTypeScript) {
     const tsConfigFile = getExistFile({
@@ -144,11 +172,53 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions => {
     extraRollupPlugins,
     extensions,
     extraNodeResolvePluginOpt,
+    include,
+    extraReplacePluginOpts,
+    extraInjectPluginOpts,
+  }
+
+  // umd 基础配置
+  const umdOutput = {
+    format: type,
+    sourcemap: umd && (umd as IUmdOpt).sourcemap,
+    file: path.join(cwd, `dist/${(umd && (umd as IUmdOpt).outFile) || `${outFileName}`}.umd.js`),
+    name: (umd && umd.name) || (pkg.name && lodash.camelCase(path.basename(pkg.name))),
+    globals: umd && (umd as IUmdOpt).globals,
   }
 
   switch (type) {
     case BundleOutTypeMap.umd:
-      return { input }
+      return [
+        {
+          input,
+          output: { ...umdOutput },
+          plugins: [
+            ...getPlugin(pluginOpt),
+            replace({
+              'process.env.NODE_ENV': JSON.stringify('development'),
+            }),
+          ],
+        },
+        // xx.umd.min.js
+        ...(umd && (umd as IUmdOpt).minFile
+          ? [
+              {
+                input,
+                output: {
+                  ...umdOutput,
+                  file: path.join(cwd, `dist/${(umd && (umd as IUmdOpt).outFile) || `${outFileName}`}.umd.min.js`),
+                },
+                plugins: [
+                  ...getPlugin(pluginOpt),
+                  replace({
+                    'process.env.NODE_ENV': JSON.stringify('production'),
+                  }),
+                  terser(terserOpts),
+                ],
+              },
+            ]
+          : []),
+      ]
     case BundleOutTypeMap.cjs:
       output = {
         format: type,
@@ -156,7 +226,7 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions => {
         file: path.join(cwd, `dist/${(cjs && (cjs as ICjsOpt).outFile) || `${outFileName}`}.js`),
       }
       plugins = [...getPlugin(pluginOpt), ...(cjs && (cjs as ICjsOpt)?.minify ? [terser(terserOpts)] : [])]
-      return { output, input, plugins }
+      return [{ output, input, plugins }]
     case BundleOutTypeMap.esm:
       output = {
         format: type,
@@ -165,7 +235,7 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions => {
       }
       // 压缩
       plugins = [...getPlugin(pluginOpt), ...(esm && (esm as IEsmOpt)?.minify ? [terser(terserOpts)] : [])]
-      return { output, input, plugins }
+      return [{ output, input, plugins }]
 
     default:
       throw new Error(`Unsupported type ${type}`)

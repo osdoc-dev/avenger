@@ -19,6 +19,12 @@ const main = () => {
   console.log('calc:', calc(1, 4))
   console.log('ddd:', ddd('ddd123'))
   console.log('foo:', foo)
+
+  console.log('process.env.NODE_ENV', process.env.NODE_ENV)
 }
 
-main()
+export default {
+  init() {
+    main()
+  },
+}

@@ -30,13 +30,15 @@ const schema = createSchema(joi =>
         minify: joi.boolean(),
         sourcemap: joi.boolean(),
         minFile: joi.boolean(),
-        name: joi.string().required(),
+        name: joi.string(),
+        globals: joi.object(),
       }),
     ],
     outFile: joi.string(),
     entry: [joi.string()],
     disableTypeCheck: joi.boolean(),
     typescriptOpts: joi.object(),
+    include: joi.string(),
   })
 )
 

@@ -1,6 +1,9 @@
 export default {
   esm: 'rollup',
   cjs: 'rollup',
-  outFile: 'sdk-demo',
-  umd: false,
+  outFile: 'sdk',
+  umd: {
+    name: 'SDK',
+    sourcemap: true,
+  },
 }

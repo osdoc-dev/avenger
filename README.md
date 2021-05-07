@@ -88,6 +88,31 @@ export default {
 
 配置打包文件是否需要输出 `sourcemap` 文件
 
+- **umd**
+
+`umd` 只能使用 `rollup` 打包
+
+- **umd.outFile**
+
+输出文件，优先级大于上面的那个 `outFile`
+
+- **umd.minify**
+
+是否输出 `umd.min.js` 一般用于正式环境
+
+
+- **umd.globals**
+
+`umd` 全局模块， 官网解释 [rollup globals](https://www.rollupjs.com/guide/big-list-of-options#%E5%85%A8%E5%B1%80%E6%A8%A1%E5%9D%97globals--g--globals) 
+
+- **umd.name**
+
+`umd` name 官网解释 [rollup name](hhttps://www.rollupjs.com/guide/big-list-of-options#%E7%94%9F%E6%88%90%E5%8C%85%E5%90%8D%E7%A7%B0name--n--name) 
+
+- **umd.sourcemap**
+
+配置打包文件是否需要输出 `sourcemap` 文件
+
 - **disableTypeCheck**
 
 打包时禁用 `typescript` 类型检查
@@ -105,3 +130,15 @@ export default {
 - **extraRollupPlugins**
 
 拓展 `rollup plugins` 
+
+- **include**
+
+配置 `@rollup/plugin-commonjs` `include` 属性
+
+- **extraReplacePluginOpts** 
+
+配置 `@rollup/plugin-replace` 属性
+
+- **extraInjectPluginOpts** 
+
+配置 `@rollup/plugin-inject`  属性
