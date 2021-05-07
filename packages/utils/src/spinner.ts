@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-03-31 23:52:11
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-03-31 23:55:48
+ * @Last Modified time: 2021-05-06 23:49:28
  */
 
 import chalk from 'chalk'
@@ -18,7 +18,7 @@ interface IMessage {
 let lastMessage: IMessage | null = null
 let isPaused = false
 
-export const logWithSpinner = (symbol: string, message: string) => {
+export const logWithSpinner = (symbol: string, message?: string) => {
   if (!message) {
     message = symbol
     symbol = chalk.green('✔')
@@ -38,16 +38,14 @@ export const logWithSpinner = (symbol: string, message: string) => {
 }
 
 export const stopSpinner = (persist?: boolean) => {
-  if (!spinner.isSpinning) 
-    return
-  
+  if (!spinner.isSpinning) return
+
   if (lastMessage && persist !== false) {
     spinner.stopAndPersist({
       symbol: lastMessage.symbol,
       text: lastMessage.text,
     })
-  }
-  else {
+  } else {
     spinner.stop()
   }
   lastMessage = null

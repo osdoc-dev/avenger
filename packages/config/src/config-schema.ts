@@ -23,6 +23,16 @@ const schema = createSchema(joi =>
         sourcemap: joi.boolean(),
       }),
     ],
+    umd: [
+      joi.boolean(),
+      joi.object({
+        outFile: joi.string(),
+        minify: joi.boolean(),
+        sourcemap: joi.boolean(),
+        minFile: joi.boolean(),
+        name: joi.string().required(),
+      }),
+    ],
     outFile: joi.string(),
     entry: [joi.string()],
     disableTypeCheck: joi.boolean(),

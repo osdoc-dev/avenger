@@ -1,14 +1,24 @@
-import { log } from './utils'
+import printLog, { log } from './utils'
+import foo from './foo'
 
 console.log('sdk-demo')
 
 interface IProps {}
 
 export function calc(a: number, b: number) {
-  log('print log')
+  console.log('calc fun', a, b)
+  log(a + b)
   return a + b
 }
-
-export default function (opt: IProps) {
-  console.log('123123', opt)
+export const ddd = (opt: IProps) => {
+  console.log('dddd fun opt', opt)
+  printLog()
 }
+
+const main = () => {
+  console.log('calc:', calc(1, 4))
+  console.log('ddd:', ddd('ddd123'))
+  console.log('foo:', foo)
+}
+
+main()

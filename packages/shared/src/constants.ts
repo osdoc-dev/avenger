@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-01 00:20:14
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-04-27 19:49:50
+ * @Last Modified time: 2021-05-07 00:02:19
  */
 import { IBundleOutTypeMapProps } from './types'
 
@@ -20,4 +20,5 @@ export const BundleTypeMap = {
 export const BundleOutTypeMap = {
   esm: 'esm',
   cjs: 'cjs',
+  umd: 'umd',
 } as IBundleOutTypeMapProps

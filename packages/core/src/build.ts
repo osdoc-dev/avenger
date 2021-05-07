@@ -3,7 +3,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 09:45:43
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-04-27 22:41:59
+ * @Last Modified time: 2021-05-07 00:15:09
  */
 import path from 'path'
 import {
@@ -16,7 +16,7 @@ import {
   BundleOutTypeMap,
 } from '@osdoc-dev/avenger-shared'
 import { getBundleOpts } from '@osdoc-dev/avenger-config'
-import { info, rimraf } from '@osdoc-dev/avenger-utils'
+import { logWithSpinner, rimraf } from '@osdoc-dev/avenger-utils'
 import registerBabel from './register-babel'
 import { rollupBuild } from './rollup'
 
@@ -28,12 +28,16 @@ export const build = (opt?: ICliOpt) => {
 
   // 获取打包配置
   const buildConfig = getBundleOpts(opt)
-  info(`build config ===> ${JSON.stringify(buildConfig)}`)
+  logWithSpinner('获取打包配置', '')
+  logWithSpinner('', JSON.stringify(buildConfig))
+  logWithSpinner('删除编译产物', '')
 
   // 删除编译产物
   rimraf.sync(path.join(cwd, 'dist'))
 
-  const { esm, entry, cjs } = buildConfig as IBuildConfigOpt
+  const { esm, entry, cjs, umd } = buildConfig as IBuildConfigOpt
+
+  logWithSpinner('执行打包 📦', '')
 
   // build esm
   if (esm) {
@@ -48,4 +52,7 @@ export const build = (opt?: ICliOpt) => {
     if (cjsOpt.type === BundleTypeMap.rollup)
       rollupBuild({ cwd, type: BundleOutTypeMap.cjs, entry, watch, buildConfig })
   }
+
+  // build umd
+  if (umd && umd.name) rollupBuild({ cwd, type: BundleOutTypeMap.umd, entry, watch, buildConfig })
 }

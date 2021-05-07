@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 21:35:08
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-06 23:03:31
+ * @Last Modified time: 2021-05-07 00:17:08
  */
 import path from 'path'
 import { IRollupBuildOpt, IBuildConfigOpt, BundleOutTypeMap, IEsmOpt, ICjsOpt } from '@osdoc-dev/avenger-shared'
@@ -89,7 +89,6 @@ function getPlugin(opt?: IGetPluginOpt) {
 }
 
 export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions => {
-  console.log('rollup 打包配置', opt)
   const { cwd, entry, type, buildConfig } = opt || {}
   const {
     esm,
@@ -148,6 +147,8 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions => {
   }
 
   switch (type) {
+    case BundleOutTypeMap.umd:
+      return { input }
     case BundleOutTypeMap.cjs:
       output = {
         format: type,

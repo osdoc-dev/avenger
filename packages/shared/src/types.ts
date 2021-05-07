@@ -2,12 +2,12 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 09:42:11
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-04-30 14:20:02
+ * @Last Modified time: 2021-05-07 00:07:32
  */
 
 export type TBundleType = 'rollup' | 'babel'
 
-export type TBundleOutType = 'esm' | 'cjs'
+export type TBundleOutType = 'esm' | 'cjs' | 'umd'
 
 export interface IBundleOutTypeMapProps {
   [propName: string]: TBundleOutType
@@ -28,12 +28,20 @@ export interface ICjsOpt extends IBundleOutType {
   sourcemap?: boolean
 }
 
+export interface IUmdOpt {
+  name: string
+  sourcemap?: boolean
+  minFile?: boolean
+  outFile?: string
+}
+
 // 用户配置
 export interface IBuildConfigOpt {
   entry?: string // 输入
   outFile?: string // 输出
   esm?: TBundleType | IEsmOpt | false // 支持配置 'esm' | {type:'esm'} | false
   cjs?: TBundleType | ICjsOpt | false //
+  umd?: IUmdOpt | false //
   disableTypeCheck?: boolean
   extraTypescriptPluginOpt?: Object
   /** 拓展 rollup plugins */
