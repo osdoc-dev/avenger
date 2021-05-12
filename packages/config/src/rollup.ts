@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 21:35:08
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-08 00:20:06
+ * @Last Modified time: 2021-05-12 19:24:07
  */
 import path from 'path'
 import { lodash, getExistFile, error, getPackageJson } from '@osdoc-dev/avenger-utils'
@@ -27,6 +27,7 @@ import tempDir from 'temp-dir'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import replace, { RollupReplaceOptions } from '@rollup/plugin-replace'
 import inject, { RollupInjectOptions } from '@rollup/plugin-inject'
+import { getBabelConfig } from './babel'
 
 interface IGetPluginOpt {
   isTs: boolean
@@ -39,11 +40,23 @@ interface IGetPluginOpt {
   include?: string
   extraReplacePluginOpts?: Object
   extraInjectPluginOpts?: Object
+  target?: 'node' | 'browser'
+  type: string
 }
 
-function getBablePluginOpt() {
+function getBablePluginOpt({ target, type, extensions }) {
+  const { config } = getBabelConfig({
+    target: type === 'esm' ? 'browser' : target,
+    type,
+    typescript: true,
+  })
+
   const ret = {
+    ...config,
     babelHelpers: 'bundled' as RollupBabelInputPluginOptions['babelHelpers'],
+    exclude: /\/node_modules\//,
+    babelrc: false,
+    extensions,
   }
   return ret
 }
@@ -61,10 +74,12 @@ function getPlugin(opt?: IGetPluginOpt) {
     include = /node_modules/,
     extraReplacePluginOpts,
     extraInjectPluginOpts,
+    target,
+    type,
   } = opt || {}
 
   // 获取 @rollup/plugin-babel 配置
-  const babelPluOpt = getBablePluginOpt()
+  const babelPluOpt = getBablePluginOpt({ target, type, extensions })
 
   // rollup-plugin-typescript2
   const tsPlugin = isTs
@@ -124,6 +139,7 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
     extraReplacePluginOpts,
     extraInjectPluginOpts,
     include,
+    target = 'browser',
   } = buildConfig as IBuildConfigOpt
 
   const extensions = ['.js', '.jsx', '.ts', '.tsx', '.es6', '.es', '.mjs']
@@ -175,6 +191,8 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
     include,
     extraReplacePluginOpts,
     extraInjectPluginOpts,
+    target,
+    type,
   }
 
   // umd 基础配置

@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 09:42:11
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-08 00:17:35
+ * @Last Modified time: 2021-05-12 19:19:46
  */
 
 export type TBundleType = 'rollup' | 'babel'
@@ -48,6 +48,7 @@ export interface IBuildConfigOpt {
   cjs?: TBundleType | ICjsOpt | false //
   umd?: IUmdOpt | false //
   disableTypeCheck?: boolean
+  target?: 'node' | 'browser'
   extraTypescriptPluginOpt?: Object
   /** 拓展 rollup plugins */
   extraRollupPlugins?: any[]

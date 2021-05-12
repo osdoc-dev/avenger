@@ -3,7 +3,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-08 22:02:11
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-04-30 10:18:37
+ * @Last Modified time: 2021-05-12 19:16:28
  */
 import { IGetBabelConfigProps } from '@osdoc-dev/avenger-shared'
 
@@ -24,6 +24,7 @@ export const getBabelConfig = (opt: IGetBabelConfigProps) => {
         modules: type === 'esm' ? false : 'auto',
       },
     ],
+    ...(isBrowser ? [require.resolve('@babel/preset-react')] : []),
   ]
 
   const plugins = [
