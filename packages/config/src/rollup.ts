@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 21:35:08
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-12 19:50:33
+ * @Last Modified time: 2021-05-12 20:01:25
  */
 import path from 'path'
 import { lodash, getExistFile, error, getPackageJson } from '@osdoc-dev/avenger-utils'
@@ -44,6 +44,7 @@ interface IGetPluginOpt {
   extraInjectPluginOpts?: Object
   target?: 'node' | 'browser'
   type: string
+  extraPostCssPluginOpt?: Object[]
 }
 
 function getBablePluginOpt({ target, type, extensions }) {
@@ -78,6 +79,7 @@ function getPlugin(opt?: IGetPluginOpt) {
     extraInjectPluginOpts,
     target,
     type,
+    extraPostCssPluginOpt = [],
   } = opt || {}
 
   // 获取 @rollup/plugin-babel 配置
@@ -113,7 +115,7 @@ function getPlugin(opt?: IGetPluginOpt) {
 
   const hasInject = extraInjectPluginOpts && Object.keys(extraInjectPluginOpts || {}).length > 0
 
-  const postCssPluOpt = { plugins: [autoprefixer()] } as PostCSSPluginConf
+  const postCssPluOpt = { plugins: [autoprefixer(), ...extraPostCssPluginOpt] } as PostCSSPluginConf
 
   return [
     url(),
@@ -145,6 +147,7 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
     extraInjectPluginOpts,
     include,
     target = 'browser',
+    extraPostCssPluginOpt,
   } = buildConfig as IBuildConfigOpt
 
   const extensions = ['.js', '.jsx', '.ts', '.tsx', '.es6', '.es', '.mjs']
@@ -198,6 +201,7 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
     extraInjectPluginOpts,
     target,
     type,
+    extraPostCssPluginOpt,
   }
 
   // umd 基础配置

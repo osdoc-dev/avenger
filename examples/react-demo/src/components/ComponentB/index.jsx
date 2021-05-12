@@ -1,5 +1,5 @@
 import React from 'react'
 
-const ComponentB = () => <div>ComponentB</div>
+const ComponentB = () => <div className='componentA'>ComponentB</div>
 
 export default ComponentB

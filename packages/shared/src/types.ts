@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 09:42:11
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-12 19:19:46
+ * @Last Modified time: 2021-05-12 20:00:40
  */
 
 export type TBundleType = 'rollup' | 'babel'
@@ -56,6 +56,7 @@ export interface IBuildConfigOpt {
   include?: string // commonjs 插件
   extraReplacePluginOpts?: Object // replace 插件
   extraInjectPluginOpts?: Object // inject 插件
+  extraPostCssPluginOpt?: Object[] // postcss plugin 额外的插件
 }
 
 export interface IRollupBuildOpt {
