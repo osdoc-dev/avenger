@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 21:35:08
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-12 19:24:07
+ * @Last Modified time: 2021-05-12 19:50:33
  */
 import path from 'path'
 import { lodash, getExistFile, error, getPackageJson } from '@osdoc-dev/avenger-utils'
@@ -27,6 +27,8 @@ import tempDir from 'temp-dir'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import replace, { RollupReplaceOptions } from '@rollup/plugin-replace'
 import inject, { RollupInjectOptions } from '@rollup/plugin-inject'
+import postcss, { PostCSSPluginConf } from 'rollup-plugin-postcss'
+import autoprefixer from 'autoprefixer'
 import { getBabelConfig } from './babel'
 
 interface IGetPluginOpt {
@@ -111,9 +113,12 @@ function getPlugin(opt?: IGetPluginOpt) {
 
   const hasInject = extraInjectPluginOpts && Object.keys(extraInjectPluginOpts || {}).length > 0
 
+  const postCssPluOpt = { plugins: [autoprefixer()] } as PostCSSPluginConf
+
   return [
     url(),
     svgr(),
+    postcss(postCssPluOpt),
     commonjs({ include }),
     nodeResolve({ mainFields: ['module', 'jsnext:main', 'main'], extensions, ...extraNodeResolvePluginOpt }),
     ...tsPlugin,
