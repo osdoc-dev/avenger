@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 09:42:11
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-12 20:00:40
+ * @Last Modified time: 2021-05-13 15:15:43
  */
 
 export type TBundleType = 'rollup' | 'babel'
@@ -49,6 +49,7 @@ export interface IBuildConfigOpt {
   umd?: IUmdOpt | false //
   disableTypeCheck?: boolean
   target?: 'node' | 'browser'
+  nodeVersion?: number
   extraTypescriptPluginOpt?: Object
   /** 拓展 rollup plugins */
   extraRollupPlugins?: any[]
@@ -57,6 +58,16 @@ export interface IBuildConfigOpt {
   extraReplacePluginOpts?: Object // replace 插件
   extraInjectPluginOpts?: Object // inject 插件
   extraPostCssPluginOpt?: Object[] // postcss plugin 额外的插件
+  extraPostCssOpt?: Object // postcss 插件额外配置
+  autoprefixerOpts?: Object
+  extractCSS?: boolean // 抽离 css 为单独文件
+  cssModule?: boolean | Record<string, any>
+  injectCSS?: boolean
+  rollupSassOpt?: Object
+  rollupLessOpt?: Object
+  runtimeHelpers?: boolean // babel runtimeHelpers
+  extraBabelPlugins?: any[]
+  extraBabelPresets?: any[]
 }
 
 export interface IRollupBuildOpt {
@@ -83,6 +94,7 @@ export interface IGetBabelConfigProps {
   nodeVersion?: number
   type?: TBundleOutType
   typescript?: boolean
+  runtimeHelpers?: boolean
 }
 
 export interface IObjectProps {

@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 21:35:08
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-12 20:01:25
+ * @Last Modified time: 2021-05-13 15:17:07
  */
 import path from 'path'
 import { lodash, getExistFile, error, getPackageJson } from '@osdoc-dev/avenger-utils'
@@ -29,108 +29,8 @@ import replace, { RollupReplaceOptions } from '@rollup/plugin-replace'
 import inject, { RollupInjectOptions } from '@rollup/plugin-inject'
 import postcss, { PostCSSPluginConf } from 'rollup-plugin-postcss'
 import autoprefixer from 'autoprefixer'
+import NpmImport from 'less-plugin-npm-import'
 import { getBabelConfig } from './babel'
-
-interface IGetPluginOpt {
-  isTs: boolean
-  cwd: string
-  disableTypeCheck?: boolean
-  extraTypescriptPluginOpt: Object
-  extraRollupPlugins?: any[]
-  extensions?: string[]
-  extraNodeResolvePluginOpt: Object
-  include?: string
-  extraReplacePluginOpts?: Object
-  extraInjectPluginOpts?: Object
-  target?: 'node' | 'browser'
-  type: string
-  extraPostCssPluginOpt?: Object[]
-}
-
-function getBablePluginOpt({ target, type, extensions }) {
-  const { config } = getBabelConfig({
-    target: type === 'esm' ? 'browser' : target,
-    type,
-    typescript: true,
-  })
-
-  const ret = {
-    ...config,
-    babelHelpers: 'bundled' as RollupBabelInputPluginOptions['babelHelpers'],
-    exclude: /\/node_modules\//,
-    babelrc: false,
-    extensions,
-  }
-  return ret
-}
-
-/** 获取插件配置 */
-function getPlugin(opt?: IGetPluginOpt) {
-  const {
-    isTs,
-    cwd,
-    disableTypeCheck,
-    extraTypescriptPluginOpt,
-    extraRollupPlugins,
-    extensions,
-    extraNodeResolvePluginOpt,
-    include = /node_modules/,
-    extraReplacePluginOpts,
-    extraInjectPluginOpts,
-    target,
-    type,
-    extraPostCssPluginOpt = [],
-  } = opt || {}
-
-  // 获取 @rollup/plugin-babel 配置
-  const babelPluOpt = getBablePluginOpt({ target, type, extensions })
-
-  // rollup-plugin-typescript2
-  const tsPlugin = isTs
-    ? [
-        typescript2({
-          cwd,
-          clean: true,
-          tsconfig: path.join(cwd, 'tsconfig.json'),
-          cacheRoot: `${tempDir}/.rollup_plugin_typescript2_cache`,
-          useTsconfigDeclarationDir: true,
-          tsconfigDefaults: {
-            compilerOptions: {
-              declaration: true,
-              declarationDir: 'dist/types',
-            },
-          },
-          tsconfigOverride: {
-            compilerOptions: {
-              module: 'ES2015',
-            },
-          },
-          check: !disableTypeCheck,
-          ...(extraTypescriptPluginOpt || {}),
-        }),
-      ]
-    : []
-
-  const hasReplace = extraReplacePluginOpts && Object.keys(extraReplacePluginOpts || {}).length > 0
-
-  const hasInject = extraInjectPluginOpts && Object.keys(extraInjectPluginOpts || {}).length > 0
-
-  const postCssPluOpt = { plugins: [autoprefixer(), ...extraPostCssPluginOpt] } as PostCSSPluginConf
-
-  return [
-    url(),
-    svgr(),
-    postcss(postCssPluOpt),
-    commonjs({ include }),
-    nodeResolve({ mainFields: ['module', 'jsnext:main', 'main'], extensions, ...extraNodeResolvePluginOpt }),
-    ...tsPlugin,
-    babel(babelPluOpt),
-    json(),
-    ...(hasReplace ? [replace({ ...extraReplacePluginOpts } as RollupReplaceOptions)] : []),
-    ...(hasInject ? [inject({ ...extraInjectPluginOpts } as RollupInjectOptions)] : []),
-    ...extraRollupPlugins,
-  ]
-}
 
 export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
   const { cwd, entry, type, buildConfig } = opt || {}
@@ -147,7 +47,18 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
     extraInjectPluginOpts,
     include,
     target = 'browser',
-    extraPostCssPluginOpt,
+    extraPostCssPluginOpt = [],
+    nodeVersion,
+    extractCSS = false,
+    injectCSS = true,
+    cssModule,
+    extraPostCssOpt,
+    autoprefixerOpts,
+    rollupSassOpt,
+    rollupLessOpt,
+    runtimeHelpers,
+    extraBabelPlugins,
+    extraBabelPresets,
   } = buildConfig as IBuildConfigOpt
 
   const extensions = ['.js', '.jsx', '.ts', '.tsx', '.es6', '.es', '.mjs']
@@ -188,20 +99,101 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
     },
   }
 
-  const pluginOpt = {
-    isTs: isTypeScript,
-    cwd,
-    disableTypeCheck,
-    extraTypescriptPluginOpt,
-    extraRollupPlugins,
-    extensions,
-    extraNodeResolvePluginOpt,
-    include,
-    extraReplacePluginOpts,
-    extraInjectPluginOpts,
-    target,
-    type,
-    extraPostCssPluginOpt,
+  /** 获取插件配置 */
+  function getPlugin() {
+    const runtimeH = type === BundleOutTypeMap.cjs ? false : runtimeHelpers
+
+    // babel plugin opt 使用内置获取 babel 配置
+    const getBablePluginOpt = () => {
+      const { config } = getBabelConfig({
+        target: type === 'esm' ? 'browser' : target,
+        type,
+        nodeVersion,
+        typescript: true,
+        runtimeHelpers: runtimeH,
+      })
+
+      if (extraBabelPlugins && extraBabelPlugins.length > 0) config.plugins.push(...extraBabelPlugins)
+      if (extraBabelPresets && extraBabelPresets.length > 0) config.presets.push(...extraBabelPresets)
+
+      const ret = {
+        ...config,
+        babelHelpers: runtimeH ? 'runtime' : ('bundled' as RollupBabelInputPluginOptions['babelHelpers']),
+        exclude: /\/node_modules\//,
+        babelrc: false,
+        extensions,
+      }
+      return ret
+    }
+
+    // 获取 @rollup/plugin-babel 配置
+    const babelPluOpt = getBablePluginOpt()
+
+    // rollup-plugin-typescript2
+    const tsPlugin = isTypeScript
+      ? [
+          typescript2({
+            cwd,
+            clean: true,
+            tsconfig: path.join(cwd, 'tsconfig.json'),
+            cacheRoot: `${tempDir}/.rollup_plugin_typescript2_cache`,
+            useTsconfigDeclarationDir: true,
+            tsconfigDefaults: {
+              compilerOptions: {
+                declaration: true,
+                declarationDir: 'dist/types',
+              },
+            },
+            tsconfigOverride: {
+              compilerOptions: {
+                module: 'ES2015',
+              },
+            },
+            check: !disableTypeCheck,
+            ...(extraTypescriptPluginOpt || {}),
+          }),
+        ]
+      : []
+
+    const hasReplace = extraReplacePluginOpts && Object.keys(extraReplacePluginOpts || {}).length > 0
+
+    const hasInject = extraInjectPluginOpts && Object.keys(extraInjectPluginOpts || {}).length > 0
+
+    // https://www.npmjs.com/package/rollup-plugin-postcss
+    const postCssPluOpt = {
+      extract: extractCSS,
+      inject: injectCSS,
+      modules: cssModule,
+      ...(cssModule ? { autoModules: false } : {}),
+      use: {
+        less: {
+          plugins: [new NpmImport({ prefix: '~' })],
+          javascriptEnabled: true,
+          ...rollupLessOpt,
+        },
+        sass: {
+          ...rollupSassOpt,
+        },
+        stylus: false,
+      },
+      // extraPostCssPluginOpt postcss plugin 拓展配置
+      plugins: [autoprefixer({ remove: false, ...autoprefixerOpts }), ...extraPostCssPluginOpt],
+      ...extraPostCssOpt,
+    } as PostCSSPluginConf
+
+    return [
+      url(),
+      svgr(),
+      postcss(postCssPluOpt),
+      commonjs({ include }),
+      nodeResolve({ mainFields: ['module', 'jsnext:main', 'main'], extensions, ...extraNodeResolvePluginOpt }),
+      ...tsPlugin,
+      babel(babelPluOpt),
+      json(),
+      ...(hasReplace ? [replace({ ...extraReplacePluginOpts } as RollupReplaceOptions)] : []),
+      ...(hasInject ? [inject({ ...extraInjectPluginOpts } as RollupInjectOptions)] : []),
+      ...extraRollupPlugins,
+    ]
   }
 
   // umd 基础配置
@@ -220,7 +212,7 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
           input,
           output: { ...umdOutput },
           plugins: [
-            ...getPlugin(pluginOpt),
+            ...getPlugin(),
             replace({
               'process.env.NODE_ENV': JSON.stringify('development'),
             }),
@@ -236,7 +228,7 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
                   file: path.join(cwd, `dist/${(umd && (umd as IUmdOpt).outFile) || `${outFileName}`}.umd.min.js`),
                 },
                 plugins: [
-                  ...getPlugin(pluginOpt),
+                  ...getPlugin(),
                   replace({
                     'process.env.NODE_ENV': JSON.stringify('production'),
                   }),
@@ -252,7 +244,7 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
         sourcemap: cjs && (cjs as ICjsOpt).sourcemap,
         file: path.join(cwd, `dist/${(cjs && (cjs as ICjsOpt).outFile) || `${outFileName}`}.js`),
       }
-      plugins = [...getPlugin(pluginOpt), ...(cjs && (cjs as ICjsOpt)?.minify ? [terser(terserOpts)] : [])]
+      plugins = [...getPlugin(), ...(cjs && (cjs as ICjsOpt)?.minify ? [terser(terserOpts)] : [])]
       return [{ output, input, plugins }]
     case BundleOutTypeMap.esm:
       output = {
@@ -261,7 +253,7 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
         file: path.join(cwd, `dist/${(esm && (esm as IEsmOpt).outFile) || `${outFileName}.esm`}.js`),
       }
       // 压缩
-      plugins = [...getPlugin(pluginOpt), ...(esm && (esm as IEsmOpt)?.minify ? [terser(terserOpts)] : [])]
+      plugins = [...getPlugin(), ...(esm && (esm as IEsmOpt)?.minify ? [terser(terserOpts)] : [])]
       return [{ output, input, plugins }]
 
     default:

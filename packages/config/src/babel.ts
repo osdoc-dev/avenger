@@ -3,12 +3,12 @@
  * @Author: ahwgs
  * @Date: 2021-04-08 22:02:11
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-12 19:16:28
+ * @Last Modified time: 2021-05-13 15:14:47
  */
 import { IGetBabelConfigProps } from '@osdoc-dev/avenger-shared'
 
 export const getBabelConfig = (opt: IGetBabelConfigProps) => {
-  const { target, nodeVersion = 6, type, typescript } = opt || {}
+  const { target, nodeVersion = 6, type, typescript, runtimeHelpers } = opt || {}
 
   const isBrowser = target === 'browser'
 
@@ -37,6 +37,19 @@ export const getBabelConfig = (opt: IGetBabelConfigProps) => {
     require.resolve('@babel/plugin-proposal-optional-chaining'),
     [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
     [require.resolve('@babel/plugin-proposal-class-properties'), { loose: true }],
+    ...(runtimeHelpers
+      ? [
+          [
+            require.resolve('@babel/plugin-transform-runtime'),
+            {
+              useESModules: isBrowser && type === 'esm',
+              // 需要用户dependencies 必须有@babel/runtime
+              // eslint-disable-next-line import/no-extraneous-dependencies
+              version: require('@babel/runtime/package.json').version,
+            },
+          ],
+        ]
+      : []),
   ]
 
   return {

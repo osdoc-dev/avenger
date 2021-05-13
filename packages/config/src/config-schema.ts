@@ -39,6 +39,19 @@ const schema = createSchema(joi =>
     disableTypeCheck: joi.boolean(),
     typescriptOpts: joi.object(),
     include: joi.string(),
+    cssModule: [joi.boolean(), joi.object()],
+    extraReplacePluginOpts: joi.object(),
+    extraInjectPluginOpts: joi.object(),
+    extraPostCssPluginOpt: joi.object(),
+    extraPostCssOpt: joi.object(),
+    autoprefixerOpts: joi.object(),
+    extractCSS: joi.boolean(),
+    injectCSS: joi.boolean(),
+    rollupSassOpt: joi.object(),
+    rollupLessOpt: joi.object(),
+    runtimeHelpers: joi.boolean(),
+    extraBabelPlugins: joi.object(),
+    extraBabelPresets: joi.object(),
   })
 )
 

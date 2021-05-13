@@ -1,6 +1,6 @@
 import React from 'react'
-import './index.css'
+import styles from './index.module.css'
 
-const ComponentA = () => <div className='componentA'>ComponentA</div>
+const ComponentA = () => <div className={styles.componentA}>ComponentA</div>
 
 export default ComponentA

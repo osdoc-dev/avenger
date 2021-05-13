@@ -47,6 +47,8 @@ export default {
 
 配置为 `babel` 则使用 `babel` 构建
 
+> babel 模式暂时不支持
+
 对于 `esm` 的配置，也可使用对象的形式，如下
 
 - **esm.type**
@@ -147,3 +149,19 @@ export default {
 - **extraInjectPluginOpts** 
 
 配置 `@rollup/plugin-inject`  属性
+
+- **nodeVersion** **
+
+- **target**
+
+- **extractCSS**
+
+- **cssModule**
+
+- **injectCSS**
+
+- **extraPostCssOpt**
+
+- **rollupLessOpt**
+
+- **rollupSassOpt**

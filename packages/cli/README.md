@@ -6,6 +6,7 @@
 [![NPM downloads](https://img.shields.io/npm/dm/@osdoc-dev/avenger-cli.svg?style=flat)](https://www.npmjs.com/package/@osdoc-dev/avenger-cli)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
 
+
 ## 如何使用
 
 ```TypeScript
@@ -45,6 +46,8 @@ export default {
 配置为 `rollup` 则使用 `rollup` 构建
 
 配置为 `babel` 则使用 `babel` 构建
+
+> babel 模式暂时不支持
 
 对于 `esm` 的配置，也可使用对象的形式，如下
 
@@ -146,3 +149,19 @@ export default {
 - **extraInjectPluginOpts** 
 
 配置 `@rollup/plugin-inject`  属性
+
+- **nodeVersion** **
+
+- **target**
+
+- **extractCSS**
+
+- **cssModule**
+
+- **injectCSS**
+
+- **extraPostCssOpt**
+
+- **rollupLessOpt**
+
+- **rollupSassOpt**
