@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-01 00:06:20
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-13 15:58:16
+ * @Last Modified time: 2021-05-13 17:10:22
  */
 import { semver, error } from '@osdoc-dev/avenger-utils'
 import minimist, { ParsedArgs } from 'minimist'
@@ -21,7 +21,6 @@ export const checkNodeVersion = (needVerison: string, packageName: string) => {
 export const getBuildArguments = () => {
   const opt = minimist(process.argv.slice(3))
   const { file, entry, watch, esm, cjs, umd } = opt as ParsedArgs
-  console.log('opt', opt)
   return {
     cwd: process.cwd(),
     watch: watch || false,

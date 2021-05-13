@@ -3,7 +3,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-01 00:19:05
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-13 13:46:09
+ * @Last Modified time: 2021-05-13 17:11:50
  */
 
 import { IBuildConfigOpt, ICliOpt, DEFAULT_FILES, CLI_CONFIG_FILES } from '@osdoc-dev/avenger-shared'
@@ -32,7 +32,11 @@ const getConfigByFile = ({ cwd }): IBuildConfigOpt => {
       files: CLI_CONFIG_FILES,
       returnRelative: false,
     })
-    if (!configFile) return {}
+
+    if (!configFile) {
+      errorLog(`未找到配置文件,请检查是否包含${CLI_CONFIG_FILES.toString()}文件`)
+      process.exit(1)
+    }
     const config = getConfigModule(configFile)
     // 校验配置文件格式
     validateConfig(config)
@@ -56,7 +60,12 @@ export const getBundleOpts = (opt: ICliOpt): IBuildConfigOpt => {
 
   const config = getConfigByFile({ cwd })
   // 将配置文件与行内配置合并
-  const configRet = lodash.merge(config, inlineConfig) as IBuildConfigOpt
+  const configRet = lodash.merge(inlineConfig, config) as IBuildConfigOpt
+
+  if (!configRet.esm && !configRet.cjs && !configRet.umd) {
+    errorLog('未找到要输出的格式，请检查配置')
+    process.exit(1)
+  }
 
   if (configRet.esm && typeof configRet.esm === 'string') configRet.esm = { type: configRet.esm }
   if (configRet.cjs && typeof configRet.cjs === 'string') configRet.cjs = { type: configRet.cjs }
