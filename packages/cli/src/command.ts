@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 00:22:55
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-04-28 16:04:52
+ * @Last Modified time: 2021-05-13 15:57:15
  */
 
 import path from 'path'
@@ -22,7 +22,10 @@ export const registerCommand = () => {
     .description('打包')
     .option('--file', '打包输出文件名')
     .option('--entry', '打包主入口')
-    .option('-w, --watch', 'watch 模式')
+    .option('--watch', 'watch 模式')
+    .option('--esm', '打包esm')
+    .option('--cjs', '打包cjs')
+    .option('--umd', '打包umd')
 
     .allowUnknownOption()
     .action(() => build(getBuildArguments()))

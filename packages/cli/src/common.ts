@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-01 00:06:20
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-04-27 22:50:06
+ * @Last Modified time: 2021-05-13 15:58:16
  */
 import { semver, error } from '@osdoc-dev/avenger-utils'
 import minimist, { ParsedArgs } from 'minimist'
@@ -20,14 +20,17 @@ export const checkNodeVersion = (needVerison: string, packageName: string) => {
 
 export const getBuildArguments = () => {
   const opt = minimist(process.argv.slice(3))
-  const { file, entry, watch, w } = opt as ParsedArgs
-  const isWatch = !!watch || !!w
+  const { file, entry, watch, esm, cjs, umd } = opt as ParsedArgs
+  console.log('opt', opt)
   return {
     cwd: process.cwd(),
-    watch: isWatch,
+    watch: watch || false,
     inlineConfig: {
       outFile: file,
       entry,
+      esm: esm ? 'rollup' : false,
+      cjs: cjs ? 'rollup' : false,
+      umd: umd ? 'rollup' : false,
     },
   } as ICliOpt
 }
