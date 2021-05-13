@@ -3,7 +3,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-01 00:19:05
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-13 17:11:50
+ * @Last Modified time: 2021-05-13 17:36:19
  */
 
 import { IBuildConfigOpt, ICliOpt, DEFAULT_FILES, CLI_CONFIG_FILES } from '@osdoc-dev/avenger-shared'
@@ -70,5 +70,5 @@ export const getBundleOpts = (opt: ICliOpt): IBuildConfigOpt => {
   if (configRet.esm && typeof configRet.esm === 'string') configRet.esm = { type: configRet.esm }
   if (configRet.cjs && typeof configRet.cjs === 'string') configRet.cjs = { type: configRet.cjs }
 
-  return { ...configRet, entry }
+  return { ...configRet, entry: configRet.entry || entry }
 }
