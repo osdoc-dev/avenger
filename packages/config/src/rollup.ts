@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 21:35:08
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-13 15:17:07
+ * @Last Modified time: 2021-05-13 19:03:44
  */
 import path from 'path'
 import { lodash, getExistFile, error, getPackageJson } from '@osdoc-dev/avenger-utils'
@@ -31,6 +31,10 @@ import postcss, { PostCSSPluginConf } from 'rollup-plugin-postcss'
 import autoprefixer from 'autoprefixer'
 import NpmImport from 'less-plugin-npm-import'
 import { getBabelConfig } from './babel'
+
+interface IGetPluginOpt {
+  minimizeCss?: boolean
+}
 
 export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
   const { cwd, entry, type, buildConfig } = opt || {}
@@ -100,7 +104,8 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
   }
 
   /** 获取插件配置 */
-  function getPlugin() {
+  function getPlugin(getPluginOpt?: IGetPluginOpt) {
+    const { minimizeCss = false } = getPluginOpt || {}
     const runtimeH = type === BundleOutTypeMap.cjs ? false : runtimeHelpers
 
     // babel plugin opt 使用内置获取 babel 配置
@@ -164,6 +169,7 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
       extract: extractCSS,
       inject: injectCSS,
       modules: cssModule,
+      minimize: minimizeCss,
       ...(cssModule ? { autoModules: false } : {}),
       use: {
         less: {
@@ -228,7 +234,7 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
                   file: path.join(cwd, `dist/${(umd && (umd as IUmdOpt).outFile) || `${outFileName}`}.umd.min.js`),
                 },
                 plugins: [
-                  ...getPlugin(),
+                  ...getPlugin({ minimizeCss: true }),
                   replace({
                     'process.env.NODE_ENV': JSON.stringify('production'),
                   }),
@@ -244,7 +250,10 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
         sourcemap: cjs && (cjs as ICjsOpt).sourcemap,
         file: path.join(cwd, `dist/${(cjs && (cjs as ICjsOpt).outFile) || `${outFileName}`}.js`),
       }
-      plugins = [...getPlugin(), ...(cjs && (cjs as ICjsOpt)?.minify ? [terser(terserOpts)] : [])]
+      plugins = [
+        ...getPlugin({ minimizeCss: (cjs as ICjsOpt)?.minify }),
+        ...((cjs as ICjsOpt)?.minify ? [terser(terserOpts)] : []),
+      ]
       return [{ output, input, plugins }]
     case BundleOutTypeMap.esm:
       output = {
@@ -253,7 +262,10 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
         file: path.join(cwd, `dist/${(esm && (esm as IEsmOpt).outFile) || `${outFileName}.esm`}.js`),
       }
       // 压缩
-      plugins = [...getPlugin(), ...(esm && (esm as IEsmOpt)?.minify ? [terser(terserOpts)] : [])]
+      plugins = [
+        ...getPlugin({ minimizeCss: (esm as IEsmOpt)?.minify }),
+        ...(esm && (esm as IEsmOpt)?.minify ? [terser(terserOpts)] : []),
+      ]
       return [{ output, input, plugins }]
 
     default:

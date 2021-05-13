@@ -2,13 +2,12 @@
  * @Author: ahwgs
  * @Date: 2021-03-31 23:52:11
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-04-28 17:30:07
+ * @Last Modified time: 2021-05-13 19:08:24
  */
 
 import readline from 'readline'
 import stripAnsi from 'strip-ansi'
 import chalk from 'chalk'
-import { stopSpinner } from './spinner'
 
 const format = (label: string, message: string) =>
   message
@@ -35,7 +34,6 @@ export const warn = (message: string, tag = null) => {
 }
 
 export const error = (message, tag = null) => {
-  stopSpinner()
   console.error(format(chalk.bgRed(' ERROR ') + (tag ? chalkTag(tag) : ' 🔥'), chalk.red(message)))
   if (message instanceof Error) console.error(message.stack)
 }

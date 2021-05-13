@@ -3,11 +3,11 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 20:23:14
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-07 23:05:41
+ * @Last Modified time: 2021-05-13 19:07:44
  */
 import { IRollupBuildOpt } from '@osdoc-dev/avenger-shared'
 import { getRollupConfig } from '@osdoc-dev/avenger-config'
-import { info, error as errLog, done, stopSpinner } from '@osdoc-dev/avenger-utils'
+import { info, error as errLog, done } from '@osdoc-dev/avenger-utils'
 import { rollup, watch as rollupWatch } from 'rollup'
 
 export const rollupBuild = async (opt: IRollupBuildOpt) => {
@@ -40,7 +40,6 @@ export const rollupBuild = async (opt: IRollupBuildOpt) => {
         const bundle = await rollup(input)
         await bundle.write(output)
         done(`${output.format} =>>> 编译成功`)
-        stopSpinner()
       } catch (error) {
         errLog(error)
         errLog('编译失败')

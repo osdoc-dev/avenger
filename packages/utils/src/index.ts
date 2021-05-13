@@ -5,7 +5,6 @@ import lodash from 'lodash'
 import rimraf from 'rimraf'
 import { createSchema, validateSchema, validateSchemaSync } from './validate'
 
-export * from './spinner'
 export * from './log'
 export * from './package'
 export * from './file'
