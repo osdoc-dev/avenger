@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-03-31 23:52:11
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-13 19:08:24
+ * @Last Modified time: 2021-05-14 14:31:06
  */
 
 import readline from 'readline'
@@ -38,7 +38,7 @@ export const error = (message, tag = null) => {
   if (message instanceof Error) console.error(message.stack)
 }
 
-export const clearConsole = (title: string) => {
+export const clearConsole = (title?: string) => {
   if (process.stdout.isTTY) {
     const blank = '\n'.repeat(process.stdout.rows)
     console.log(blank)

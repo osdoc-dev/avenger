@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 09:42:11
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-13 15:15:43
+ * @Last Modified time: 2021-05-14 16:49:30
  */
 
 export type TBundleType = 'rollup' | 'babel'
@@ -105,4 +105,18 @@ export interface IPackageJson {
   dependencies?: Object
   peerDependencies?: Object
   name?: string
+  scripts: any
+}
+
+export interface ICreateOptions {
+  force?: boolean
+}
+
+export interface ICreateOpt {
+  name: string
+  options?: ICreateOptions
+}
+
+export interface IPackageJsonData {
+  [key: string]: any
 }

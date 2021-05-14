@@ -12,5 +12,6 @@ module.exports = {
     '@typescript-eslint/indent': 0,
     indent: 0,
     'no-await-in-loop': 0,
+    'unicorn/no-array-for-each': 0,
   },
 }

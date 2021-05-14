@@ -2,13 +2,13 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 00:22:55
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-13 15:57:15
+ * @Last Modified time: 2021-05-14 14:01:50
  */
 
 import path from 'path'
 import program from 'commander'
 import { getPackageJson, chalk } from '@osdoc-dev/avenger-utils'
-import { build } from '@osdoc-dev/avenger-core'
+import { build, create } from '@osdoc-dev/avenger-core'
 import envinfo from 'envinfo'
 import { getBuildArguments } from './common'
 // 注册命令
@@ -26,9 +26,15 @@ export const registerCommand = () => {
     .option('--esm', '打包esm')
     .option('--cjs', '打包cjs')
     .option('--umd', '打包umd')
-
-    .allowUnknownOption()
     .action(() => build(getBuildArguments()))
+
+  program
+    .command('create [name]')
+    .description('创建一个新项目')
+    .option('--force', '强制覆盖已存在文件夹')
+    .action(async (name, options) => {
+      create({ name, options })
+    })
 
   // debug info
   program

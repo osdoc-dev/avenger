@@ -2,11 +2,12 @@
  * @Author: ahwgs
  * @Date: 2021-04-01 00:06:20
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-13 17:10:22
+ * @Last Modified time: 2021-05-14 14:02:18
  */
 import { semver, error } from '@osdoc-dev/avenger-utils'
 import minimist, { ParsedArgs } from 'minimist'
 import { ICliOpt } from '@osdoc-dev/avenger-shared'
+
 // 检查node版本,避免某些 api 不适配
 export const checkNodeVersion = (needVerison: string, packageName: string) => {
   if (!semver.satisfies(process.version, needVerison, { includePrerelease: true })) {
