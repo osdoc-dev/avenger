@@ -1,6 +1,6 @@
 <div align="center">
     <a href="#" target="_blank">
-    <img src="https://i.loli.net/2021/05/13/ThAqi1x6aE8VYOl.jpg" alt="Logo" width="80" height="80">
+    <img src="https://static.ahwgs.cn/avenger_logo.jpeg" alt="Logo" width="80" height="80">
     </a>
     <h2>@osdoc-dev/avenger</h2>
     <p align="center">一键 📦 打包工具</p>
@@ -14,13 +14,15 @@
 
 ## 如何使用
 
+### 安装
+
 ```TypeScript
 yarn add @osdoc-dev/avenger-cli 
 ```
 
-## 配置
+### 增加配置文件
 
-新建配置文件 `'.avengerrc.js', '.avengerrc.ts', '.avenger.config.js', '.avenger.config.ts'`
+在根目录下新建 `.avengerrc.js, .avengerrc.ts, .avenger.config.js, .avenger.config.ts`
 
 ```typescript
 export default {
@@ -29,10 +31,37 @@ export default {
     sourcemap: true,
   },
   outFile: "demo",
-};
+}
 ```
 
-### 配置项
+### 增加脚本
+
+在 `package.json` 中新增
+
+```json
+{
+  "script":{
+    "build":"avenger build"
+  }
+}
+```
+
+### 打包
+```bash
+yarn build
+```
+### 创建新项目
+
+新版本支持新建二方包模版
+
+```bash
+avenger create <project name> --force
+```
+
+- `force` 强制覆盖本地已存在文件夹
+
+
+## 配置项
 
 - **entry**
 
