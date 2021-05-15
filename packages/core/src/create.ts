@@ -28,7 +28,7 @@ interface IValidateProject {
   warnings?: any[]
 }
 
-const IUserConfig = {
+const UserConfig = {
   Eslint_Prettier: 'ESLint / Prettier',
   Jest: 'Jest',
   Commitlint: 'Commitlint',
@@ -106,7 +106,7 @@ const setLintConfig = async (
   deps: string[],
   packageJsonData: IPackageJsonData
 ) => {
-  if (choose.includes(IUserConfig.Eslint_Prettier)) {
+  if (choose.includes(UserConfig.Eslint_Prettier)) {
     const prettierData = prettier.format(`
       const prettier = require('@osdoc-dev/eslint-config-preset-prettier')
       module.exports = {
@@ -136,7 +136,7 @@ const setLintConfig = async (
     }
 
     // @ts-ignore
-    if (choose.includes(IUserConfig.Jest)) eslintData.env.jest = true
+    if (choose.includes(UserConfig.Jest)) eslintData.env.jest = true
 
     packageJsonData.husky = {
       ...packageJsonData.husky,
@@ -156,7 +156,7 @@ const setLintConfig = async (
     await fs.writeFile(`${targetDir}/.eslintrc.js`, `module.exports = ${JSON.stringify(eslintData, null, 2)}`)
     await fs.writeFile(`${targetDir}/.prettierrc.js`, prettierData)
     await fs.writeFile(`${targetDir}/.prettierignore`, prettierIgnore)
-    await fs.writeFile(`${targetDir}/..eslintignore`, eslintIgnore)
+    await fs.writeFile(`${targetDir}/.eslintignore`, eslintIgnore)
 
     deps.push(
       ...['@osdoc-dev/eslint-config-preset-prettier', 'lint-staged', '@osdoc-dev/eslint-config-preset-ts', 'prettier']
@@ -171,15 +171,15 @@ const getUserConfig = async () =>
       type: 'checkbox',
       message: '选择预设配置',
       choices: [
-        { name: 'ESLint / Prettier', value: IUserConfig.Eslint_Prettier },
-        { name: 'Jest', value: IUserConfig.Jest },
-        { name: 'Commitlint', value: IUserConfig.Commitlint },
+        { name: 'ESLint / Prettier', value: UserConfig.Eslint_Prettier },
+        { name: 'Jest', value: UserConfig.Jest },
+        { name: 'Commitlint', value: UserConfig.Commitlint },
       ],
     },
   ])
 
 const setJestConfig = async (choose: string[], targetDir: string, deps: string[]) => {
-  if (choose.includes(IUserConfig.Jest)) {
+  if (choose.includes(UserConfig.Jest)) {
     const jestData = {
       preset: 'ts-jest',
       testEnvironment: 'node',
@@ -205,7 +205,7 @@ const setCommitlintConfig = async (
   deps: string[],
   packageJsonData: IPackageJsonData
 ) => {
-  if (choose.includes(IUserConfig.Commitlint)) {
+  if (choose.includes(UserConfig.Commitlint)) {
     const lintData = { extends: ['@commitlint/config-conventional'] }
 
     await fs.writeFile(`${targetDir}/commitlint.config.js`, `module.exports = ${JSON.stringify(lintData, null, 2)}`)
@@ -273,7 +273,7 @@ const setPackageJsonFile = async (
     'check-types': 'tsc --noEmit',
   }
   // eslint-disable-next-line quotes
-  if (choose.includes(IUserConfig.Eslint_Prettier)) data.lint = "prettier --check '**/*.{js,json,md,tsx,ts}'"
+  if (choose.includes(UserConfig.Eslint_Prettier)) data.lint = "prettier --check '**/*.{js,json,md,tsx,ts}'"
   json.scripts = data
   await fs.writeJSON(filePath, { ...json, ...packageJsonData }, { spaces: 2 })
   info('项目初始化成功!')
