@@ -4,7 +4,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "homepage": "https://osdoc-dev.github.io/avenger",
+  "homepage": "https://osdoc-dev.github.io/avenger/",
   "scripts": {
     "clean": "lerna clean --y && yarn clean:lib",
     "bootstrap": "lerna bootstrap",
