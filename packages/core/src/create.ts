@@ -137,10 +137,9 @@ const setLintConfig = async (
 
     // @ts-ignore
     if (choose.includes(UserConfig.Jest)) eslintData.env.jest = true
-
     packageJsonData.husky = {
-      ...packageJsonData.husky,
       hooks: {
+        ...packageJsonData.husky.hooks,
         'pre-commit': 'lint-staged',
       },
     }
