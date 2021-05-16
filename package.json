@@ -12,7 +12,9 @@
     "clean:lib": "rimraf packages/**/lib packages/**/tsconfig.tsbuildinfo",
     "debug": "node --inspect-brk packages/cli/bin/avenger.js",
     "build": "tsc -b packages/**",
-    "test": "jest"
+    "test": "jest",
+    "start:website": "dumi dev",
+    "build:website": "dumi build"
   },
   "devDependencies": {
     "lerna": "^4.0.0",
@@ -32,7 +34,8 @@
     "rimraf": "^2.6.2",
     "jest": "^26.6.3",
     "@types/jest": "^26.0.22",
-    "ts-jest": "^26.4.4"
+    "ts-jest": "^26.4.4",
+    "dumi": "^1.0.13"
   },
   "lint-staged": {
     "*.{js,jsx,less,md,json}": [
