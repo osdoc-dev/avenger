@@ -10,3 +10,4 @@
 /lib
 packages/*/node_modules
 packages/*/lib
+/dist-website

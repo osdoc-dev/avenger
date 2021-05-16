@@ -17,4 +17,5 @@ export default defineConfig({
       path: 'https://github.com/osdoc-dev/avenger',
     },
   ],
+  outputPath: './dist-website',
 })

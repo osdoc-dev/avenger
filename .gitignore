@@ -107,3 +107,4 @@ dist
 lib
 
 .umi
+/dist-website
