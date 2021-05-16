@@ -270,6 +270,7 @@ const setPackageJsonFile = async (
     clean: 'rm -rf ./dist',
     build: 'yarn clean && avenger build',
     'check-types': 'tsc --noEmit',
+    commit: 'git cz',
   }
   // eslint-disable-next-line quotes
   if (choose.includes(UserConfig.Eslint_Prettier)) data.lint = "prettier --check '**/*.{js,json,md,tsx,ts}'"
