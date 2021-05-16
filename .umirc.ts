@@ -19,6 +19,4 @@ export default defineConfig({
   ],
   hash: true,
   outputPath: './dist-website',
-  base: '/avenger',
-  publicPath: '/avenger/',
 })

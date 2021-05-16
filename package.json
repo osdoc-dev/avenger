@@ -14,8 +14,7 @@
     "build": "tsc -b packages/**",
     "test": "jest",
     "start:website": "dumi dev",
-    "build:website": "dumi build",
-    "website": "gh-pages -d dist-website"
+    "build:website": "dumi build"
   },
   "devDependencies": {
     "lerna": "^4.0.0",
@@ -36,8 +35,7 @@
     "jest": "^26.6.3",
     "@types/jest": "^26.0.22",
     "ts-jest": "^26.4.4",
-    "dumi": "^1.0.13",
-    "gh-pages": "3.1.0"
+    "dumi": "^1.0.13"
   },
   "lint-staged": {
     "*.{js,jsx,less,md,json}": [
