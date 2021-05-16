@@ -9,6 +9,7 @@ export default defineConfig({
   },
   locales: [['zh-CN', '中文']],
   logo: 'https://static.ahwgs.cn/avenger_logo.jpeg',
+  favicon: 'https://static.ahwgs.cn/avenger_logo.jpeg',
   navs: [
     null,
     {
