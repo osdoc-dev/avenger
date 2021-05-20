@@ -21,5 +21,7 @@ export default defineConfig({
   history: {
     type: 'hash',
   },
+  base: '/avenger',
+  publicPath: '/avenger/',
   outputPath: './dist-website',
 })
