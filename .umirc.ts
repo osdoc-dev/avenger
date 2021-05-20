@@ -18,5 +18,8 @@ export default defineConfig({
     },
   ],
   hash: true,
+  history: {
+    type: 'hash',
+  },
   outputPath: './dist-website',
 })
