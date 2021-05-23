@@ -24,4 +24,7 @@ export default defineConfig({
   base: '/avenger',
   publicPath: '/avenger/',
   outputPath: './dist-website',
+  analytics: {
+    baidu: 'dba8543d4e8693b1be1fef2ab85e33eb',
+  },
 })

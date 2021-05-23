@@ -3506,7 +3506,7 @@
     jest-worker "24.9.0"
     prettier "2.2.1"
 
-"@umijs/plugin-analytics@^0.2.2":
+"@umijs/plugin-analytics@0.2.2", "@umijs/plugin-analytics@^0.2.2":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@umijs/plugin-analytics/-/plugin-analytics-0.2.2.tgz#575fd231d4327ea13413217aa1b5fc6bdd89465e"
   integrity sha512-dVDzUfgIdEwdCC6a5IsMYpIPI+bEZjBEqIhAvw9dic6Vk77w9RxQxyRfW11dDmdXLAwWphp22NntQNt1ejZPtg==
