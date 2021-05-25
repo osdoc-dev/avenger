@@ -3,7 +3,7 @@
  * @Author: ahwgs
  * @Date: 2021-05-13 21:18:50
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-14 17:00:55
+ * @Last Modified time: 2021-05-25 14:11:18
  */
 
 import path from 'path'
@@ -32,6 +32,8 @@ const UserConfig = {
   Eslint_Prettier: 'ESLint / Prettier',
   Jest: 'Jest',
   Commitlint: 'Commitlint',
+  Lerna: 'Lerna',
+  Avenger: 'Avenger',
 }
 
 const getCzConfig = () => ({
@@ -163,6 +165,7 @@ const setLintConfig = async (
   }
 }
 
+// 获取用户配置
 const getUserConfig = async () =>
   inquirer.prompt<{ choose }>([
     {
@@ -173,6 +176,8 @@ const getUserConfig = async () =>
         { name: 'ESLint / Prettier', value: UserConfig.Eslint_Prettier },
         { name: 'Jest', value: UserConfig.Jest },
         { name: 'Commitlint', value: UserConfig.Commitlint },
+        { name: 'Lerna', value: UserConfig.Lerna },
+        { name: 'Avenger', value: UserConfig.Avenger },
       ],
     },
   ])
@@ -190,12 +195,14 @@ const setJestConfig = async (choose: string[], targetDir: string, deps: string[]
   }
 }
 
-const setAvenger = async (targetDir: string, deps: string[]) => {
-  const configData = {
-    esm: 'rollup',
+const setAvenger = async (targetDir: string, deps: string[], choose: string[]) => {
+  if (choose.includes(UserConfig.Avenger)) {
+    const configData = {
+      esm: 'rollup',
+    }
+    await fs.writeFile(`${targetDir}/.avengerrc.ts`, `export default ${JSON.stringify(configData, null, 2)}`)
+    deps.push(...['@osdoc-dev/avenger-cli'])
   }
-  await fs.writeFile(`${targetDir}/.avengerrc.ts`, `export default ${JSON.stringify(configData, null, 2)}`)
-  deps.push(...['@osdoc-dev/avenger-cli'])
 }
 
 const setCommitlintConfig = async (
@@ -263,6 +270,10 @@ const setPackageJsonFile = async (
 
   shelljs.exec(`yarn add ${deps.join(' ')} -D`, { cwd: targetDir })
 
+  info('开发依赖安装完成')
+
+  if (choose.includes(UserConfig.Lerna)) shelljs.exec('npx lerna init', { cwd: targetDir })
+
   const filePath = `${targetDir}/package.json`
   const json = (await fs.readJSON(filePath)) as IPackageJson
   const data: IPackageJsonData = {
@@ -278,6 +289,18 @@ const setPackageJsonFile = async (
   await fs.writeJSON(filePath, { ...json, ...packageJsonData }, { spaces: 2 })
   info('项目初始化成功!')
   info(`请进入项目内进行操作 cd ${currentName} && yarn install`)
+}
+
+const setLernaConfig = async (choose: string[], deps: string[]) => {
+  if (choose.includes(UserConfig.Lerna)) deps.push(...['lerna'])
+}
+
+const setReadme = async (currentName: string, targetDir: string) => {
+  const filePath = `${targetDir}/README.md`
+
+  const data = `## ${currentName}`
+
+  await fs.writeFile(filePath, data)
 }
 
 export const create = async (opt: ICreateOpt) => {
@@ -353,6 +376,8 @@ export const create = async (opt: ICreateOpt) => {
   await setCommitlintConfig(choose, targetDir, deps, packageJsonData)
   await setLintConfig(choose, targetDir, deps, packageJsonData)
   await setJestConfig(choose, targetDir, deps)
-  await setAvenger(targetDir, deps)
+  await setLernaConfig(choose, deps)
+  await setAvenger(targetDir, deps, choose)
+  await setReadme(currentName, targetDir)
   await setPackageJsonFile(currentName, choose, targetDir, packageJsonData, deps)
 }

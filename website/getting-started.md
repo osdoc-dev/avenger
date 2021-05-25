@@ -62,9 +62,11 @@ ahwgs@ahwgsdeMacBook-Pro Desktop % avenger create test
 ? 当前文件夹 /xxx/test 已存在, 是否覆盖重写 确定
  INFO  🌈 Removing  /xxxx/test...
 ? 选择预设配置 (Press <space> to select, <a> to toggle all, <i> to invert select? 选择预设配置 
- ◉ ESLint / Prettier
- ◉ Jest
-❯◉ Commitlint
+ ◯ ESLint / Prettier
+ ◯ Jest
+ ◯ Commitlint
+ ◯ Lerna
+ ◯ Avenger
 
 ...
 

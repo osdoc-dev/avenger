@@ -34,6 +34,24 @@ export default {
 }
 ```
 
+
+同时，`avenger` 支持导出 `defineConfig` 函数辅助我们进行配置，如；
+
+```typescript
+import { defineConfig } from '@osdoc-dev/avenger-cli'
+
+export default defineConfig({
+  esm: 'rollup',
+  cjs: 'rollup',
+  outFile: 'sdk',
+  umd: {
+    name: 'SDK',
+    sourcemap: true,
+  },
+})
+
+```
+
 ### 增加脚本
 
 在 `package.json` 中新增
