@@ -13,6 +13,10 @@ export default defineConfig({
   navs: [
     null,
     {
+      title: '更新日志',
+      path: 'https://github.com/osdoc-dev/avenger/blob/master/CHANGELOG.md',
+    },
+    {
       title: 'GitHub',
       path: 'https://github.com/osdoc-dev/avenger',
     },

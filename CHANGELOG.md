@@ -1,9 +1,14 @@
-# [](https://github.com/osdoc-dev/avenger/compare/v0.1.2...v) (2021-05-25)
+# [](https://github.com/osdoc-dev/avenger/compare/v0.1.3...v) (2021-05-25)
+
+
+
+## [0.1.3](https://github.com/osdoc-dev/avenger/compare/v0.1.2...v0.1.3) (2021-05-25)
 
 
 ### Features
 
 * add defineConfig ([aa79c49](https://github.com/osdoc-dev/avenger/commit/aa79c495b7e16d3758cd2b379eb16e1dd7dc8356))
+* create add changelog script ([ec8a62e](https://github.com/osdoc-dev/avenger/commit/ec8a62e827ef5acdba22c6bfad0efca8537f49dd))
 * create support learn ([419472e](https://github.com/osdoc-dev/avenger/commit/419472e58901a51ac44148876af3f6c2362254ba))
 
 
