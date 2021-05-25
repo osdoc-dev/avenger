@@ -15,7 +15,8 @@
     "test": "jest",
     "start:website": "dumi dev",
     "build:website": "dumi build",
-    "gh-pages": "gh-pages -d dist-website"
+    "gh-pages": "gh-pages -d dist-website",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
   },
   "devDependencies": {
     "lerna": "^4.0.0",
@@ -38,7 +39,8 @@
     "ts-jest": "^26.4.4",
     "dumi": "^1.0.13",
     "gh-pages": "3.1.0",
-    "@umijs/plugin-analytics": "0.2.2"
+    "@umijs/plugin-analytics": "0.2.2",
+    "conventional-changelog-cli": "2.1.1"
   },
   "lint-staged": {
     "*.{js,jsx,less,md,json}": [

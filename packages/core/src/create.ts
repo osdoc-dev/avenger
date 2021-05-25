@@ -3,7 +3,7 @@
  * @Author: ahwgs
  * @Date: 2021-05-13 21:18:50
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-25 14:11:18
+ * @Last Modified time: 2021-05-25 14:31:31
  */
 
 import path from 'path'
@@ -230,7 +230,16 @@ const setCommitlintConfig = async (
         path: 'node_modules/cz-customizable',
       },
     }
-    deps.push(...['@commitlint/cli', '@commitlint/config-conventional', 'husky', 'commitizen', 'cz-customizable'])
+    deps.push(
+      ...[
+        '@commitlint/cli',
+        '@commitlint/config-conventional',
+        'husky',
+        'commitizen',
+        'cz-customizable',
+        'conventional-changelog-cli',
+      ]
+    )
   }
 }
 
@@ -285,6 +294,10 @@ const setPackageJsonFile = async (
   }
   // eslint-disable-next-line quotes
   if (choose.includes(UserConfig.Eslint_Prettier)) data.lint = "prettier --check '**/*.{js,json,md,tsx,ts}'"
+  if (choose.includes(UserConfig.Lerna)) data.bootstrap = 'lerna bootstrap'
+  if (choose.includes(UserConfig.Commitlint))
+    data.changelog = 'conventional-changelog -p angular -i CHANGELOG.md -s -r 0'
+
   json.scripts = data
   await fs.writeJSON(filePath, { ...json, ...packageJsonData }, { spaces: 2 })
   info('项目初始化成功!')
