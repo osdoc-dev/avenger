@@ -13,5 +13,14 @@ module.exports = {
     indent: 0,
     'no-await-in-loop': 0,
     'unicorn/no-array-for-each': 0,
+    'unicorn/filename-case': [
+      'error',
+      {
+        cases: {
+          camelCase: true,
+          pascalCase: true,
+        },
+      },
+    ],
   },
 }

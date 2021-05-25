@@ -1,4 +1,6 @@
-export default {
+import { defineConfig } from '../../packages/cli/lib'
+
+export default defineConfig({
   esm: 'rollup',
   cjs: 'rollup',
   outFile: 'sdk',
@@ -6,4 +8,4 @@ export default {
     name: 'SDK',
     sourcemap: true,
   },
-}
+})
