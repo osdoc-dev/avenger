@@ -52,6 +52,7 @@ const schema = createSchema(joi =>
     runtimeHelpers: joi.boolean(),
     extraBabelPlugins: joi.object(),
     extraBabelPresets: joi.object(),
+    extraExternal: joi.array().items(joi.string()),
   })
 )
 

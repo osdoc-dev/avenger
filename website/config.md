@@ -281,3 +281,11 @@ export default defineConfig({
 拓展 `rollup-plugin-postcss` `sass` 的配置
 
 
+## extraExternal
+
+* Type: `Array<string>`
+* Default: `[]`
+
+拓展 `rollup` 的 [外链(external)](https://www.rollupjs.com/guide/big-list-of-options#%E5%A4%96%E9%93%BEexternal--e--external)
+
+默认会读取 `dependencies` `peerDependencies`，可自行拓展该配置

@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 09:42:11
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-14 16:49:30
+ * @Last Modified time: 2021-05-26 23:08:14
  */
 
 export type TBundleType = 'rollup' | 'babel'
@@ -68,6 +68,7 @@ export interface IBuildConfigOpt {
   runtimeHelpers?: boolean // babel runtimeHelpers
   extraBabelPlugins?: any[]
   extraBabelPresets?: any[]
+  extraExternal?: string[]
 }
 
 export interface IRollupBuildOpt {

@@ -2,9 +2,10 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 21:35:08
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-13 19:03:44
+ * @Last Modified time: 2021-05-26 23:08:07
  */
 import path from 'path'
+import { readFileSync, existsSync } from 'fs'
 import { lodash, getExistFile, error, getPackageJson } from '@osdoc-dev/avenger-utils'
 import {
   IRollupBuildOpt,
@@ -13,6 +14,7 @@ import {
   IEsmOpt,
   ICjsOpt,
   IUmdOpt,
+  TBundleOutType,
   IPackageJson,
 } from '@osdoc-dev/avenger-shared'
 import { RollupOptions, OutputOptions } from 'rollup'
@@ -34,6 +36,16 @@ import { getBabelConfig } from './babel'
 
 interface IGetPluginOpt {
   minimizeCss?: boolean
+}
+
+export function getExternal(opts: { cwd: string; formatType: TBundleOutType }): string[] {
+  const pkgFile = path.join(opts.cwd, 'package.json')
+  if (!existsSync(pkgFile)) return []
+  const pkg = JSON.parse(readFileSync(pkgFile, 'utf-8'))
+  return [
+    ...(opts.formatType !== BundleOutTypeMap.umd ? Object.keys(pkg.dependencies || {}) : []),
+    ...Object.keys(pkg.peerDependencies || {}),
+  ]
 }
 
 export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
@@ -63,7 +75,10 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
     runtimeHelpers,
     extraBabelPlugins,
     extraBabelPresets,
+    extraExternal = [],
   } = buildConfig as IBuildConfigOpt
+
+  const external = [...getExternal({ cwd, formatType: type }), ...extraExternal]
 
   const extensions = ['.js', '.jsx', '.ts', '.tsx', '.es6', '.es', '.mjs']
 
@@ -223,6 +238,7 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
               'process.env.NODE_ENV': JSON.stringify('development'),
             }),
           ],
+          external,
         },
         // xx.umd.min.js
         ...(umd && (umd as IUmdOpt).minFile
@@ -240,6 +256,7 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
                   }),
                   terser(terserOpts),
                 ],
+                external,
               },
             ]
           : []),
@@ -254,7 +271,7 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
         ...getPlugin({ minimizeCss: (cjs as ICjsOpt)?.minify }),
         ...((cjs as ICjsOpt)?.minify ? [terser(terserOpts)] : []),
       ]
-      return [{ output, input, plugins }]
+      return [{ output, input, plugins, external }]
     case BundleOutTypeMap.esm:
       output = {
         format: type,
@@ -266,7 +283,7 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
         ...getPlugin({ minimizeCss: (esm as IEsmOpt)?.minify }),
         ...(esm && (esm as IEsmOpt)?.minify ? [terser(terserOpts)] : []),
       ]
-      return [{ output, input, plugins }]
+      return [{ output, input, plugins, external }]
 
     default:
       throw new Error(`Unsupported type ${type}`)
