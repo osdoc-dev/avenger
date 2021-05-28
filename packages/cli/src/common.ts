@@ -2,11 +2,11 @@
  * @Author: ahwgs
  * @Date: 2021-04-01 00:06:20
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-14 14:02:18
+ * @Last Modified time: 2021-05-28 14:24:24
  */
-import { semver, error } from '@osdoc-dev/avenger-utils'
+import { semver, error, log } from '@osdoc-dev/avenger-utils'
 import minimist, { ParsedArgs } from 'minimist'
-import { ICliOpt } from '@osdoc-dev/avenger-shared'
+import { ICliOpt, ICreateOpt, CreateProjectType } from '@osdoc-dev/avenger-shared'
 
 // 检查node版本,避免某些 api 不适配
 export const checkNodeVersion = (needVerison: string, packageName: string) => {
@@ -33,4 +33,28 @@ export const getBuildArguments = () => {
       umd: umd ? 'rollup' : false,
     },
   } as ICliOpt
+}
+
+const getTemplate = (template: any) => {
+  // 没有输入template
+  if (!template) return ''
+  const temps = Object.keys(CreateProjectType).map(v => v)
+  let ret = template
+  if (!temps.includes(template)) {
+    log(`当前 template 不在预设范围内，将默认使用 ${CreateProjectType.basic}`)
+    ret = CreateProjectType.basic
+  }
+  return ret
+}
+
+export const getCreateArguments = () => {
+  const opt = minimist(process.argv.slice(3))
+  const { template, force, _ } = opt as ParsedArgs
+  return {
+    name: _[0] || '',
+    options: {
+      force: force || false,
+      template: getTemplate(template),
+    },
+  } as ICreateOpt
 }

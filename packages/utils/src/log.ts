@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-03-31 23:52:11
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-14 14:31:06
+ * @Last Modified time: 2021-05-28 14:24:54
  */
 
 import readline from 'readline'
@@ -18,7 +18,7 @@ const format = (label: string, message: string) =>
 const chalkTag = message => chalk.bgBlackBright.white.dim(` ${message} `)
 
 export const log = (message = '', tag = null) => {
-  tag ? console.log(format(chalkTag(tag), message)) : console.log(` 🌀${message}`)
+  tag ? console.log(format(chalkTag(tag), message)) : console.log(` 🌀 ${message}`)
 }
 
 export const info = (message: string, tag = null) => {

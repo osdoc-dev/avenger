@@ -3,12 +3,11 @@
  * @Author: ahwgs
  * @Date: 2021-05-13 21:18:50
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-25 14:31:31
+ * @Last Modified time: 2021-05-28 21:51:04
  */
 
 import path from 'path'
-import fs from 'fs-extra'
-import { ICreateOpt, IPackageJsonData, IPackageJson } from '@osdoc-dev/avenger-shared'
+import { ICreateOpt, IPackageJsonData, IPackageJson, CreateProjectType } from '@osdoc-dev/avenger-shared'
 import validateProjectName from 'validate-npm-package-name'
 import {
   error,
@@ -19,8 +18,11 @@ import {
   info,
   inquirer,
   shelljs,
-  prettier,
+  fs,
+  createFolder,
+  fileGenerator,
 } from '@osdoc-dev/avenger-utils'
+import { getAuthorName, setAuthorName } from './author'
 
 interface IValidateProject {
   validForNewPackages: boolean
@@ -29,141 +31,46 @@ interface IValidateProject {
 }
 
 const UserConfig = {
-  Eslint_Prettier: 'ESLint / Prettier',
   Jest: 'Jest',
-  Commitlint: 'Commitlint',
   Lerna: 'Lerna',
-  Avenger: 'Avenger',
+  CommitLint: 'CommitLint',
 }
 
-const getCzConfig = () => ({
-  types: [
-    {
-      value: 'feat',
-      name: '✨  feat:     新功能',
+const setLintConfig = async (deps: string[], packageJsonData: IPackageJsonData, currentTemplate: string) => {
+  packageJsonData.husky = {
+    hooks: {
+      ...packageJsonData?.husky?.hooks,
+      'pre-commit': 'lint-staged',
     },
-    {
-      value: 'fix',
-      name: '🐛  fix:      修复bug',
-    },
-    {
-      value: 'refactor',
-      name: '♻️  refactor: 代码重构（既不是新功能也不是改bug）',
-    },
-    {
-      value: 'chore',
-      name: '🎫  chore:    修改流程配置',
-    },
-    {
-      value: 'docs',
-      name: '📝  docs:     修改了文档',
-    },
-    {
-      value: 'test',
-      name: '✅  test:     更新了测试用例',
-    },
-    {
-      value: 'style',
-      name: '💄  style:    修改了样式文件',
-    },
-    {
-      value: 'perf',
-      name: '⚡️  perf:     新能优化',
-    },
-    {
-      value: 'revert',
-      name: '⏪  revert:   回退提交',
-    },
-    {
-      value: 'ci',
-      name: '⏪  ci:   持续集成',
-    },
-    {
-      value: 'build',
-      name: '⏪  build:   打包',
-    },
-  ],
-  scopes: [],
-  allowCustomScopes: true,
-  allowBreakingChanges: ['feat', 'fix'],
-  subjectLimit: 50,
-  messages: {
-    type: '请选择你本次改动的修改类型',
-    customScope: '\n请明确本次改动的范围（可填）:',
-    subject: '简短描述本次改动:\n',
-    body: '详细描述本次改动 (可填). 使用 "|" 换行:\n',
-    breaking: '请列出任何 BREAKING CHANGES (可填):\n',
-    footer: '请列出本次改动关闭的ISSUE (可填). 比如: #31, #34:\n',
-    confirmCommit: '你确定提交本次改动吗?',
-  },
-})
-
-const createFolder = (filePath: string) => {
-  if (!fs.existsSync(filePath)) fs.mkdir(filePath)
-}
-
-const setLintConfig = async (
-  choose: string[],
-  targetDir: string,
-  deps: string[],
-  packageJsonData: IPackageJsonData
-) => {
-  if (choose.includes(UserConfig.Eslint_Prettier)) {
-    const prettierData = prettier.format(`
-      const prettier = require('@osdoc-dev/eslint-config-preset-prettier')
-      module.exports = {
-        ...prettier,
-      }
-    `)
-
-    const eslintData = {
-      extends: '@osdoc-dev/eslint-config-preset-ts',
-      env: {
-        node: true,
-      },
-      rules: {
-        '@typescript-eslint/no-var-requires': 0,
-        'brace-style': 0,
-        'comma-dangle': 0,
-        'arrow-parens': 0,
-        'unicorn/prevent-abbreviations': 0,
-        'space-before-function-paren': 0,
-        'global-require': 0,
-        'import/no-dynamic-require': 0,
-        '@typescript-eslint/indent': 0,
-        indent: 0,
-        'no-await-in-loop': 0,
-        'unicorn/no-array-for-each': 0,
-      },
-    }
-
-    // @ts-ignore
-    if (choose.includes(UserConfig.Jest)) eslintData.env.jest = true
-    packageJsonData.husky = {
-      hooks: {
-        ...packageJsonData.husky.hooks,
-        'pre-commit': 'lint-staged',
-      },
-    }
-
-    packageJsonData['lint-staged'] = {
-      '*.{js,json,md,tsx,ts}': ['prettier --write', 'git add'],
-      '*.ts?(x)': ['prettier --write', 'eslint --fix', 'git add'],
-    }
-
-    const prettierIgnore = '/dist\r\n/node_modules'
-    const eslintIgnore = '/dist\r\n/node_modules'
-
-    await fs.writeFile(`${targetDir}/.eslintrc.js`, `module.exports = ${JSON.stringify(eslintData, null, 2)}`)
-    await fs.writeFile(`${targetDir}/.prettierrc.js`, prettierData)
-    await fs.writeFile(`${targetDir}/.prettierignore`, prettierIgnore)
-    await fs.writeFile(`${targetDir}/.eslintignore`, eslintIgnore)
-
-    deps.push(
-      ...['@osdoc-dev/eslint-config-preset-prettier', 'lint-staged', '@osdoc-dev/eslint-config-preset-ts', 'prettier']
-    )
   }
+
+  packageJsonData['lint-staged'] = {
+    '*.{js,json,md,tsx,ts}': ['prettier --write', 'git add'],
+    '*.ts?(x)': ['prettier --write', 'eslint --fix', 'git add'],
+  }
+
+  deps.push(...['@osdoc-dev/eslint-config-preset-prettier', 'lint-staged', 'prettier'])
+
+  if (currentTemplate === CreateProjectType.basic) deps.push(...['@osdoc-dev/eslint-config-preset-ts'])
+  if (currentTemplate === CreateProjectType.react) deps.push(...['@osdoc-dev/eslint-config-preset-react'])
 }
+
+const getTemplate = async (template: string) => {
+  if (template) return { currentTemplate: template }
+  return inquirer.prompt<{ currentTemplate }>({
+    type: 'list',
+    message: '请选择项目模版:',
+    name: 'currentTemplate',
+    choices: Object.keys(CreateProjectType).map(v => v) || [],
+  })
+}
+
+const getUserAuthor = () =>
+  inquirer.prompt<{ name }>({
+    type: 'input',
+    message: '请输入项目作者名:',
+    name: 'name',
+  })
 
 // 获取用户配置
 const getUserConfig = async () =>
@@ -171,56 +78,29 @@ const getUserConfig = async () =>
     {
       name: 'choose',
       type: 'checkbox',
-      message: '选择预设配置',
+      message: '选择拓展预设配置',
       choices: [
-        { name: 'ESLint / Prettier', value: UserConfig.Eslint_Prettier },
         { name: 'Jest', value: UserConfig.Jest },
-        { name: 'Commitlint', value: UserConfig.Commitlint },
         { name: 'Lerna', value: UserConfig.Lerna },
-        { name: 'Avenger', value: UserConfig.Avenger },
+        { name: 'CommitLint', value: UserConfig.CommitLint },
       ],
     },
   ])
 
-const setJestConfig = async (choose: string[], targetDir: string, deps: string[]) => {
-  if (choose.includes(UserConfig.Jest)) {
-    const jestData = {
-      preset: 'ts-jest',
-      testEnvironment: 'node',
-      testMatch: ['**/__tests__/**/*.test.ts?(x)'],
-      testPathIgnorePatterns: ['<rootDir>/dist/', '<rootDir>/node_modules/', '(.*).d.ts'],
-    }
-    await fs.writeFile(`${targetDir}/jest.config.js`, `module.exports = ${JSON.stringify(jestData, null, 2)}`)
-    deps.push(...['jest', 'ts-jest', '@types/jest'])
-  }
+const setJestConfig = async (choose: string[], ignores: string[], deps: string[]) => {
+  if (choose.includes(UserConfig.Jest)) deps.push(...['jest', 'ts-jest', '@types/jest'])
+  else ignores.push(...['jest.config.js'])
 }
 
-const setAvenger = async (targetDir: string, deps: string[], choose: string[]) => {
-  if (choose.includes(UserConfig.Avenger)) {
-    const configData = {
-      esm: 'rollup',
-    }
-    await fs.writeFile(`${targetDir}/.avengerrc.ts`, `export default ${JSON.stringify(configData, null, 2)}`)
-    deps.push(...['@osdoc-dev/avenger-cli'])
-  }
-}
-
-const setCommitlintConfig = async (
+const setCommitLintConfig = async (
   choose: string[],
-  targetDir: string,
   deps: string[],
-  packageJsonData: IPackageJsonData
+  packageJsonData: IPackageJsonData,
+  ignores: string[]
 ) => {
-  if (choose.includes(UserConfig.Commitlint)) {
-    const lintData = { extends: ['@commitlint/config-conventional'] }
-
-    await fs.writeFile(`${targetDir}/commitlint.config.js`, `module.exports = ${JSON.stringify(lintData, null, 2)}`)
-    const czData = await getCzConfig()
-
-    await fs.writeFile(`${targetDir}/.cz-config.js`, `module.exports = ${JSON.stringify(czData, null, 2)}`)
-
+  if (choose.includes(UserConfig.CommitLint)) {
     packageJsonData.husky = {
-      ...packageJsonData.husky,
+      ...packageJsonData?.husky,
       hooks: {
         'commit-msg': 'commitlint -E HUSKY_GIT_PARAMS',
       },
@@ -240,31 +120,9 @@ const setCommitlintConfig = async (
         'conventional-changelog-cli',
       ]
     )
+  } else {
+    ignores.push(...['commitlint.config.js', '.cz-config.js'])
   }
-}
-
-// 配置ts
-const setTypescriptConfig = async (targetDir: string, deps: string[]) => {
-  const filePath = `${targetDir}/tsconfig.json`
-  await fs.writeJSON(
-    filePath,
-    {
-      compilerOptions: {
-        target: 'es5',
-        module: 'commonjs',
-        strict: true,
-        esModuleInterop: true,
-        skipLibCheck: true,
-        baseUrl: '.',
-        noUnusedLocals: true,
-        noUnusedParameters: true,
-        noFallthroughCasesInSwitch: true,
-        outDir: './dist',
-      },
-    },
-    { spaces: 2 }
-  )
-  deps.push('typescript')
 }
 
 const setPackageJsonFile = async (
@@ -272,8 +130,23 @@ const setPackageJsonFile = async (
   choose: string[],
   targetDir: string,
   packageJsonData: IPackageJsonData,
-  deps: string[]
+  deps: string[],
+  author: string
 ) => {
+  info('初始化package.json...')
+  const filePath = `${targetDir}/package.json`
+
+  const initJson = {
+    name: currentName,
+    version: '0.0.1',
+    license: 'MIT',
+    author,
+    main: 'dist/index.js',
+    files: ['dist', 'src'],
+  }
+
+  await fs.writeJSON(filePath, { ...initJson }, { spaces: 2 })
+
   info('开始安装开发依赖...! ')
   info(`执行：yarn add  ${deps.join(' ')} -D`)
 
@@ -281,9 +154,6 @@ const setPackageJsonFile = async (
 
   info('开发依赖安装完成')
 
-  if (choose.includes(UserConfig.Lerna)) shelljs.exec('npx lerna init', { cwd: targetDir })
-
-  const filePath = `${targetDir}/package.json`
   const json = (await fs.readJSON(filePath)) as IPackageJson
   const data: IPackageJsonData = {
     test: 'jest',
@@ -291,15 +161,22 @@ const setPackageJsonFile = async (
     build: 'yarn clean && avenger build',
     'check-types': 'tsc --noEmit',
     commit: 'git cz',
+    // eslint-disable-next-line quotes
+    lint: "prettier --check '**/*.{js,json,md,tsx,ts}'",
   }
-  // eslint-disable-next-line quotes
-  if (choose.includes(UserConfig.Eslint_Prettier)) data.lint = "prettier --check '**/*.{js,json,md,tsx,ts}'"
   if (choose.includes(UserConfig.Lerna)) data.bootstrap = 'lerna bootstrap'
-  if (choose.includes(UserConfig.Commitlint))
+  if (choose.includes(UserConfig.CommitLint))
     data.changelog = 'conventional-changelog -p angular -i CHANGELOG.md -s -r 0'
 
   json.scripts = data
   await fs.writeJSON(filePath, { ...json, ...packageJsonData }, { spaces: 2 })
+
+  if (choose.includes(UserConfig.Lerna)) {
+    info('检测到启动lerna')
+    await shelljs.exec('npx lerna init', { cwd: targetDir })
+    info('lerna 初始化完成')
+  }
+
   info('项目初始化成功!')
   info(`请进入项目内进行操作 cd ${currentName} && yarn install`)
 }
@@ -308,17 +185,9 @@ const setLernaConfig = async (choose: string[], deps: string[]) => {
   if (choose.includes(UserConfig.Lerna)) deps.push(...['lerna'])
 }
 
-const setReadme = async (currentName: string, targetDir: string) => {
-  const filePath = `${targetDir}/README.md`
-
-  const data = `## ${currentName}`
-
-  await fs.writeFile(filePath, data)
-}
-
 export const create = async (opt: ICreateOpt) => {
   const { name, options } = opt || {}
-  const { force } = options || {}
+  const { force, template } = options || {}
   const cwd = process.cwd()
   const inCurrent = !name || name === '.'
   const currentName = inCurrent ? path.relative('../', cwd) : name
@@ -327,7 +196,7 @@ export const create = async (opt: ICreateOpt) => {
   const result: IValidateProject = await validateProjectName(currentName)
 
   if (!result.validForNewPackages) {
-    error(`Invalid project name: "${name}"`)
+    error(`无效项目名称: "${name}"`)
 
     lodash.forEach(result.errors, (err: any) => {
       error(`Error: ${err}`)
@@ -368,7 +237,7 @@ export const create = async (opt: ICreateOpt) => {
         },
       ])
       if (action) {
-        info(`Removing  ${targetDir}...`)
+        info(`删除中  ${targetDir}...`)
         await fs.remove(targetDir)
       } else {
         process.exit(1)
@@ -376,21 +245,47 @@ export const create = async (opt: ICreateOpt) => {
     }
   }
 
-  const deps = [] as string[]
+  const deps = ['typescript', '@osdoc-dev/avenger-cli'] as string[]
   const packageJsonData = {} as IPackageJsonData
+  const ignores = [] as string[]
 
   await createFolder(targetDir)
 
-  const { choose } = await getUserConfig()
+  const { currentTemplate } = await getTemplate(template)
 
-  shelljs.exec('yarn init -y', { cwd: targetDir })
+  let author = getAuthorName()
 
-  await setTypescriptConfig(targetDir, deps)
-  await setCommitlintConfig(choose, targetDir, deps, packageJsonData)
-  await setLintConfig(choose, targetDir, deps, packageJsonData)
-  await setJestConfig(choose, targetDir, deps)
+  if (!author) {
+    const { name: authorName } = await getUserAuthor()
+    author = authorName
+    setAuthorName(authorName)
+  }
+
+  const { choose = [] } = await getUserConfig()
+
+  await setCommitLintConfig(choose, deps, packageJsonData, ignores)
+  await setLintConfig(deps, packageJsonData, currentTemplate)
+  await setJestConfig(choose, ignores, deps)
   await setLernaConfig(choose, deps)
-  await setAvenger(targetDir, deps, choose)
-  await setReadme(currentName, targetDir)
-  await setPackageJsonFile(currentName, choose, targetDir, packageJsonData, deps)
+  // 复制公共模版文件
+  await fileGenerator({
+    target: targetDir,
+    source: path.join(__dirname, '../templates/common'),
+    context: {
+      year: new Date().getFullYear(),
+      author,
+    },
+    ignores,
+  })
+  // 复制特定模版文件
+  await fileGenerator({
+    target: targetDir,
+    source: path.join(__dirname, `../templates/${currentTemplate}`),
+    context: {
+      currentName,
+      enableJest: choose.includes(UserConfig.Jest),
+    },
+    ignores,
+  })
+  await setPackageJsonFile(currentName, choose, targetDir, packageJsonData, deps, author)
 }

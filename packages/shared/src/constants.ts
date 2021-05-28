@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-01 00:20:14
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-07 00:02:19
+ * @Last Modified time: 2021-05-28 14:10:40
  */
 import { IBundleOutTypeMapProps } from './types'
 
@@ -22,3 +22,8 @@ export const BundleOutTypeMap = {
   cjs: 'cjs',
   umd: 'umd',
 } as IBundleOutTypeMapProps
+
+export const CreateProjectType = {
+  basic: 'basic',
+  react: 'react',
+}

@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 21:35:08
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-26 23:08:07
+ * @Last Modified time: 2021-05-28 11:52:28
  */
 import path from 'path'
 import { readFileSync, existsSync } from 'fs'
@@ -18,7 +18,7 @@ import {
   IPackageJson,
 } from '@osdoc-dev/avenger-shared'
 import { RollupOptions, OutputOptions } from 'rollup'
-import { terser } from 'rollup-plugin-terser'
+import { terser, Options } from 'rollup-plugin-terser'
 import url from '@rollup/plugin-url'
 import svgr from '@svgr/rollup'
 import typescript2 from 'rollup-plugin-typescript2'
@@ -109,13 +109,14 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
   const input = path.join(cwd, entry)
 
   // rollup-plugin-terser 插件配置
-  const terserOpts = {
+  const terserOpts: Options = {
     compress: {
       pure_getters: true,
       unsafe: true,
       unsafe_comps: true,
-      warnings: false,
     },
+    output: { comments: false },
+    ecma: 5,
   }
 
   /** 获取插件配置 */

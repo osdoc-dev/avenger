@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 00:22:55
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-25 11:43:11
+ * @Last Modified time: 2021-05-28 14:31:14
  */
 
 import path from 'path'
@@ -10,7 +10,9 @@ import program from 'commander'
 import { getPackageJson, chalk } from '@osdoc-dev/avenger-utils'
 import { build, create } from '@osdoc-dev/avenger-core'
 import envinfo from 'envinfo'
-import { getBuildArguments } from './common'
+import { CreateProjectType } from '@osdoc-dev/avenger-shared'
+import { getBuildArguments, getCreateArguments } from './common'
+
 // 注册命令
 export const registerCommand = () => {
   const packageJson = getPackageJson(path.join(__dirname, '..'))
@@ -32,9 +34,8 @@ export const registerCommand = () => {
     .command('create [name]')
     .description('创建一个新项目')
     .option('--force', '强制覆盖已存在文件夹')
-    .action(async (name, options) => {
-      create({ name, options })
-    })
+    .option('--template', `创建模版项目,可选项：[ ${Object.keys(CreateProjectType).join(', ')} ]`)
+    .action(() => create(getCreateArguments()))
 
   // debug info
   program

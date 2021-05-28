@@ -21,6 +21,7 @@
     "packages/*/node_modules",
     "packages/*/lib",
     "packages/*/__tests__",
-    "examples/*/node_modules"
+    "examples/*/node_modules",
+    "packages/core/templates/**/*"
   ]
 }

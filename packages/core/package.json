@@ -8,7 +8,8 @@
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
   "files": [
-    "lib"
+    "lib",
+    "templates"
   ],
   "publishConfig": {
     "access": "public"
@@ -29,13 +30,7 @@
     "@osdoc-dev/avenger-config": "^0.1.0",
     "@osdoc-dev/avenger-shared": "^0.1.0",
     "@osdoc-dev/avenger-utils": "^0.1.0",
-    "fs-extra": "^10.0.0",
-    "lodash": "^4.17.21",
     "rollup": "^2.45.2",
     "validate-npm-package-name": "^3.0.0"
-  },
-  "devDependencies": {
-    "@types/fs-extra": "^9.0.11",
-    "@types/lodash": "^4.14.168"
   }
 }

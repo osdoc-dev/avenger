@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 09:42:11
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-26 23:08:14
+ * @Last Modified time: 2021-05-28 14:32:36
  */
 
 export type TBundleType = 'rollup' | 'babel'
@@ -111,6 +111,7 @@ export interface IPackageJson {
 
 export interface ICreateOptions {
   force?: boolean
+  template?: string
 }
 
 export interface ICreateOpt {
