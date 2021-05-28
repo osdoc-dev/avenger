@@ -46,12 +46,15 @@ Commands:
 ## 创建项目
 
 ```bash
-avenger create <project name> --force
+avenger create <project name> --force --template react
 # or
 avenger create . # 在当前文件夹下创建
 ```
 
 - `--force` 该参数代表如果项目下已存在同名文件夹，则强制覆盖
+- `--template` 该参数代表建立什么类型的模版。可选项 `react` `basic`
+
+> 如果要开发一个 React 组件的话，建议选 `react` 。如果要开发一个二方包的话，建议选 `basic`
 
 执行创建命令
 
@@ -61,12 +64,15 @@ ahwgs@ahwgsdeMacBook-Pro Desktop % avenger create test
 
 ? 当前文件夹 /xxx/test 已存在, 是否覆盖重写 确定
  INFO  🌈 Removing  /xxxx/test...
+
+? 请选择项目模版: (Use arrow keys)
+❯ basic
+  react
+
 ? 选择预设配置 (Press <space> to select, <a> to toggle all, <i> to invert select? 选择预设配置 
- ◯ ESLint / Prettier
- ◯ Jest
- ◯ Commitlint
+❯◯ Jest
  ◯ Lerna
- ◯ Avenger
+ ◯ CommitLint
 
 ...
 
@@ -83,6 +89,103 @@ ahwgs@ahwgsdeMacBook-Pro Desktop % avenger create test
 
 ```bash
 yarn build # -> avenger build
+```
+
+### 创建二方包
+
+- 新建项目 
+
+```bash
+avenger create --force --template basic
+```
+
+生成的目录结构为 
+
+```
+.
+├── .avengerrc.ts
+├── .cz-config.js
+├── .eslintignore
+├── .eslintrc.js
+├── .prettierignore
+├── .prettierrc.js
+├── LICENSE
+├── README.md
+├── commitlint.config.js
+├── jest.config.js
+├── lerna.json
+├── package.json
+├── packages
+├── src
+│   └── index.ts
+├── tsconfig.json
+└── yarn.lock
+```
+
+在 `src/index.ts` 下写我们的代码
+
+- 开发调试
+
+```bash
+yarn build:w # 生成 /dist 文件夹
+```
+
+```bash
+cd dist && node index.js
+```
+
+### 创建 React 组件
+
+- 新建项目 
+
+```bash
+avenger create --force --template react 
+```
+
+生成的目录结构为 
+
+```bash
+.
+├── .avengerrc.ts
+├── .cz-config.js
+├── .eslintignore
+├── .eslintrc.js
+├── .prettierignore
+├── .prettierrc.js
+├── LICENSE
+├── README.md
+├── commitlint.config.js
+├── example
+│   ├── .gitignore
+│   ├── index.html
+│   ├── index.tsx
+│   ├── package.json
+│   └── tsconfig.json
+├── jest.config.js
+├── package.json
+├── src
+│   └── index.tsx
+├── tsconfig.json
+└── yarn.lock
+```
+
+在 `src/index.tsx` 下写我们的组件
+
+- 开发调试
+
+首先需求在主项目进行编译
+
+```bash
+yarn build:w # 生成 /dist 文件夹
+```
+
+然后进入 `example` 文件夹下
+
+```bash
+# 安装依赖
+yarn 
+# 启动预览页面
+yarn start 
 ```
 
 ## 打包
@@ -122,3 +225,5 @@ export default {
 执行命令，开始打包，默认输出至项目下 `./dist` 文件夹
 
 更多配置项在 [config](./config)
+
+

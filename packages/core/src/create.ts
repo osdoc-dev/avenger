@@ -3,7 +3,7 @@
  * @Author: ahwgs
  * @Date: 2021-05-13 21:18:50
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-28 21:51:04
+ * @Last Modified time: 2021-05-28 22:46:50
  */
 
 import path from 'path'
@@ -125,32 +125,56 @@ const setCommitLintConfig = async (
   }
 }
 
+const getInitPackageJson = (
+  template: string,
+  author: string,
+  currentName: string
+): { json: object; deps: string[] } => {
+  const common = {
+    name: currentName,
+    version: '0.1.0',
+    license: 'MIT',
+    author,
+    main: 'dist/index.js',
+    module: 'dist/index.esm.js',
+    files: ['dist'],
+  }
+
+  const depMap = {
+    [CreateProjectType.basic]: { json: { ...common }, deps: [] },
+    [CreateProjectType.react]: {
+      json: {
+        ...common,
+        peerDependencies: {
+          react: '>=16',
+        },
+      },
+      deps: ['react', 'react-dom', '@types/react', '@types/react-dom'],
+    },
+  }
+  return depMap[template]
+}
+
 const setPackageJsonFile = async (
   currentName: string,
   choose: string[],
   targetDir: string,
   packageJsonData: IPackageJsonData,
   deps: string[],
+  template: string,
   author: string
 ) => {
   info('初始化package.json...')
   const filePath = `${targetDir}/package.json`
 
-  const initJson = {
-    name: currentName,
-    version: '0.0.1',
-    license: 'MIT',
-    author,
-    main: 'dist/index.js',
-    files: ['dist', 'src'],
-  }
+  const { deps: initDeps = [], json: initJson } = getInitPackageJson(template, author, currentName)
 
   await fs.writeJSON(filePath, { ...initJson }, { spaces: 2 })
 
   info('开始安装开发依赖...! ')
-  info(`执行：yarn add  ${deps.join(' ')} -D`)
+  info(`执行：yarn add  ${[...initDeps, ...deps].join(' ')} -D`)
 
-  shelljs.exec(`yarn add ${deps.join(' ')} -D`, { cwd: targetDir })
+  shelljs.exec(`yarn add ${[...initDeps, ...deps].join(' ')} -D`, { cwd: targetDir })
 
   info('开发依赖安装完成')
 
@@ -159,6 +183,7 @@ const setPackageJsonFile = async (
     test: 'jest',
     clean: 'rm -rf ./dist',
     build: 'yarn clean && avenger build',
+    'build:w': 'yarn clean && avenger build --watch',
     'check-types': 'tsc --noEmit',
     commit: 'git cz',
     // eslint-disable-next-line quotes
@@ -267,6 +292,7 @@ export const create = async (opt: ICreateOpt) => {
   await setLintConfig(deps, packageJsonData, currentTemplate)
   await setJestConfig(choose, ignores, deps)
   await setLernaConfig(choose, deps)
+  // await setInitPackageJson(currentTemplate, deps, packageJsonData)
   // 复制公共模版文件
   await fileGenerator({
     target: targetDir,
@@ -287,5 +313,5 @@ export const create = async (opt: ICreateOpt) => {
     },
     ignores,
   })
-  await setPackageJsonFile(currentName, choose, targetDir, packageJsonData, deps, author)
+  await setPackageJsonFile(currentName, choose, targetDir, packageJsonData, deps, currentTemplate, author)
 }

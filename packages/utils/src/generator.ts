@@ -3,7 +3,7 @@
  * @Author: ahwgs
  * @Date: 2021-05-28 17:00:40
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-28 21:14:30
+ * @Last Modified time: 2021-05-28 22:23:41
  */
 
 import path from 'path'
@@ -14,7 +14,7 @@ import { glob, Mustache, fs, log } from './index'
 const copyTpl = async (opts: { templatePath: string; target: string; context: object }) => {
   const tpl = fs.readFileSync(opts.templatePath, 'utf-8')
   const content = Mustache.render(tpl, opts.context)
-  createFolder(path.dirname(opts.target))
+  await createFolder(path.dirname(opts.target))
   log(`${opts.target} 写入成功！`)
   fs.writeFileSync(opts.target, content, 'utf-8')
 }
