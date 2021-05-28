@@ -1,4 +1,3 @@
 import * as React from 'react'
-
-// Delete me
-export const Thing = () => <div>这是一个测试组件</div>
+import styles from './index.less'
+export const Thing = () => <div className={styles.box}>这是一个测试组件</div>
