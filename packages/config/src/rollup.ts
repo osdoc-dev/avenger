@@ -285,10 +285,8 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
         file: path.join(cwd, `dist/${(esm && (esm as IEsmOpt).outFile) || `${outFileName}.esm`}.js`),
       }
       // 压缩
-      plugins = [
-        ...getPlugin({ minimizeCss: (esm as IEsmOpt)?.minify }),
-        ...(esm && (esm as IEsmOpt)?.minify ? [terser(terserOpts)] : []),
-      ]
+      plugins = [...getPlugin({ minimizeCss: (esm as IEsmOpt)?.minify })]
+
       return [{ output, input, plugins, external, treeshake: treeshakeOpt }]
 
     default:
