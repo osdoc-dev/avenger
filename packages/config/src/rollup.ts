@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 21:35:08
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-28 11:52:28
+ * @Last Modified time: 2021-07-21 18:05:33
  */
 import path from 'path'
 import { readFileSync, existsSync } from 'fs'
@@ -227,12 +227,17 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
     globals: umd && (umd as IUmdOpt).globals,
   }
 
+  const treeshakeOpt = {
+    propertyReadSideEffects: false,
+  }
+
   switch (type) {
     case BundleOutTypeMap.umd:
       return [
         {
           input,
           output: { ...umdOutput },
+          treeshake: treeshakeOpt,
           plugins: [
             ...getPlugin(),
             replace({
@@ -272,7 +277,7 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
         ...getPlugin({ minimizeCss: (cjs as ICjsOpt)?.minify }),
         ...((cjs as ICjsOpt)?.minify ? [terser(terserOpts)] : []),
       ]
-      return [{ output, input, plugins, external }]
+      return [{ output, input, plugins, external, treeshake: treeshakeOpt }]
     case BundleOutTypeMap.esm:
       output = {
         format: type,
@@ -284,7 +289,7 @@ export const getRollupConfig = (opt: IRollupBuildOpt): RollupOptions[] => {
         ...getPlugin({ minimizeCss: (esm as IEsmOpt)?.minify }),
         ...(esm && (esm as IEsmOpt)?.minify ? [terser(terserOpts)] : []),
       ]
-      return [{ output, input, plugins, external }]
+      return [{ output, input, plugins, external, treeshake: treeshakeOpt }]
 
     default:
       throw new Error(`Unsupported type ${type}`)
