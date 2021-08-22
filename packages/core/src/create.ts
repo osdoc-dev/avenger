@@ -3,7 +3,7 @@
  * @Author: ahwgs
  * @Date: 2021-05-13 21:18:50
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-28 22:46:50
+ * @Last Modified time: 2021-08-22 21:40:54
  */
 
 import path from 'path'
@@ -202,17 +202,34 @@ const setPackageJsonFile = async (
     info('lerna 初始化完成')
   }
 
-  info('项目初始化成功!')
-  info(`请进入项目内进行操作 cd ${currentName} && yarn install`)
+  info('环境依赖初始化成功!')
 }
 
 const setLernaConfig = async (choose: string[], deps: string[]) => {
   if (choose.includes(UserConfig.Lerna)) deps.push(...['lerna'])
 }
 
+const setGitConfig = async (name: string, git?: string) => {
+  if (git) {
+    try {
+      info('进行 Git 初始化提交')
+      await shelljs.exec(`cd ${name}`)
+      await shelljs.exec('git init')
+      await shelljs.exec('git add .')
+      await shelljs.exec('git commit -m "chore:first commit"')
+      await shelljs.exec('git branch -M master')
+      await shelljs.exec(`git remote add origin ${git}`)
+      await shelljs.exec('git push -u origin master')
+      info('Git 初始化提交完成')
+    } catch (error_) {
+      error(`Error: ${error_}`)
+    }
+  }
+}
+
 export const create = async (opt: ICreateOpt) => {
   const { name, options } = opt || {}
-  const { force, template } = options || {}
+  const { force, template, git } = options || {}
   const cwd = process.cwd()
   const inCurrent = !name || name === '.'
   const currentName = inCurrent ? path.relative('../', cwd) : name
@@ -292,7 +309,7 @@ export const create = async (opt: ICreateOpt) => {
   await setLintConfig(deps, packageJsonData, currentTemplate)
   await setJestConfig(choose, ignores, deps)
   await setLernaConfig(choose, deps)
-  // await setInitPackageJson(currentTemplate, deps, packageJsonData)
+
   // 复制公共模版文件
   await fileGenerator({
     target: targetDir,
@@ -314,4 +331,8 @@ export const create = async (opt: ICreateOpt) => {
     ignores,
   })
   await setPackageJsonFile(currentName, choose, targetDir, packageJsonData, deps, currentTemplate, author)
+
+  await setGitConfig(currentName, git)
+
+  info(`请进入项目内进行操作 cd ${currentName} && yarn install`)
 }

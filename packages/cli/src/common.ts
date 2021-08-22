@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-01 00:06:20
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-28 14:24:24
+ * @Last Modified time: 2021-06-23 23:09:21
  */
 import { semver, error, log } from '@osdoc-dev/avenger-utils'
 import minimist, { ParsedArgs } from 'minimist'
@@ -49,12 +49,13 @@ const getTemplate = (template: any) => {
 
 export const getCreateArguments = () => {
   const opt = minimist(process.argv.slice(3))
-  const { template, force, _ } = opt as ParsedArgs
+  const { template, force, _, git: gitUrl } = opt as ParsedArgs
   return {
     name: _[0] || '',
     options: {
       force: force || false,
       template: getTemplate(template),
+      git: gitUrl,
     },
   } as ICreateOpt
 }

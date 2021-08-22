@@ -2,7 +2,7 @@
  * @Author: ahwgs
  * @Date: 2021-04-02 00:22:55
  * @Last Modified by: ahwgs
- * @Last Modified time: 2021-05-28 14:31:14
+ * @Last Modified time: 2021-08-22 21:27:42
  */
 
 import path from 'path'
@@ -34,6 +34,7 @@ export const registerCommand = () => {
     .command('create [name]')
     .description('创建一个新项目')
     .option('--force', '强制覆盖已存在文件夹')
+    .option('--git', '是否初始化Git，填写Git地址')
     .option('--template', `创建模版项目,可选项：[ ${Object.keys(CreateProjectType).join(', ')} ]`)
     .action(() => create(getCreateArguments()))
 

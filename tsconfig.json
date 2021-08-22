@@ -22,6 +22,7 @@
     "packages/*/lib",
     "packages/*/__tests__",
     "examples/*/node_modules",
-    "packages/core/templates/**/*"
+    "packages/core/templates/**/*",
+    "packages/cli/assets/**/*"
   ]
 }

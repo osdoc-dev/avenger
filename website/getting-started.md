@@ -46,13 +46,14 @@ Commands:
 ## 创建项目
 
 ```bash
-avenger create <project name> --force --template react
+avenger create <project name> --force --template react --git git@xxx.git
 # or
 avenger create . # 在当前文件夹下创建
 ```
 
 - `--force` 该参数代表如果项目下已存在同名文件夹，则强制覆盖
 - `--template` 该参数代表建立什么类型的模版。可选项 `react` `basic`
+- `--git` 该参数代表是否初始化`git`提交
 
 > 如果要开发一个 React 组件的话，建议选 `react` 。如果要开发一个二方包的话，建议选 `basic`
 

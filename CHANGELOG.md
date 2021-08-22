@@ -1,4 +1,24 @@
-# [](https://github.com/osdoc-dev/avenger/compare/v0.1.3...v) (2021-05-25)
+# [](https://github.com/osdoc-dev/avenger/compare/v0.2.1...v) (2021-08-22)
+
+
+
+## [0.2.1](https://github.com/osdoc-dev/avenger/compare/v0.2.0...v0.2.1) (2021-07-30)
+
+
+### Bug Fixes
+
+* 修复esm压缩问题 ([f97bde7](https://github.com/osdoc-dev/avenger/commit/f97bde7de5ea865fbf35ef1f4685295e3146429a))
+
+
+
+# [0.2.0](https://github.com/osdoc-dev/avenger/compare/v0.1.3...v0.2.0) (2021-05-28)
+
+
+### Features
+
+* create 增加 react 模版 ([5cad612](https://github.com/osdoc-dev/avenger/commit/5cad612d8e213be9f92bd0900f2055dbd72d0adb))
+* 修改create 增加--template ([912aa54](https://github.com/osdoc-dev/avenger/commit/912aa5470755a085b53b46f1d91ca7e9ee26b417))
+* 增加 rollup external 配置 ([9c4a957](https://github.com/osdoc-dev/avenger/commit/9c4a957e92f9029b6d0be74f41f5f5ccd3ae1376))
 
 
 
