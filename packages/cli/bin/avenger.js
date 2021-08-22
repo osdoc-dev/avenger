@@ -1,9 +1,7 @@
 #!/usr/bin/env node
 const updater = require('update-notifier')
-const { checkNodeVersion, registerCommand, printBanner } = require('../lib')
+const { checkNodeVersion, registerCommand } = require('../lib')
 const package = require('../package.json')
-
-printBanner()
 
 // 检查 node 版本
 checkNodeVersion(package.engines.node, package.name)
