@@ -1,6 +1,6 @@
 {
   "name": "@osdoc-dev/avenger-core",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "",
   "author": "ahwgs <ah_wgs@126.com>",
   "homepage": "https://github.com/osdoc-dev/avenger#readme",
@@ -27,8 +27,8 @@
   "dependencies": {
     "@babel/core": "7.12.3",
     "@babel/register": "7.12.1",
-    "@osdoc-dev/avenger-config": "^0.2.1",
-    "@osdoc-dev/avenger-shared": "^0.2.0",
+    "@osdoc-dev/avenger-config": "^0.2.2",
+    "@osdoc-dev/avenger-shared": "^0.2.2",
     "@osdoc-dev/avenger-utils": "^0.2.0",
     "rollup": "^2.45.2",
     "validate-npm-package-name": "^3.0.0"
