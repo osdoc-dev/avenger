@@ -50,8 +50,8 @@ const schema = createSchema(joi =>
     rollupSassOpt: joi.object(),
     rollupLessOpt: joi.object(),
     runtimeHelpers: joi.boolean(),
-    extraBabelPlugins: joi.object(),
-    extraBabelPresets: joi.object(),
+    extraBabelPlugins: joi.array(),
+    extraBabelPresets: joi.array(),
     extraExternal: joi.array().items(joi.string()),
   })
 )
