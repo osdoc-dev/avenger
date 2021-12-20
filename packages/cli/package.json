@@ -1,6 +1,6 @@
 {
   "name": "@osdoc-dev/avenger-cli",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "",
   "author": "ahwgs <ah_wgs@126.com>",
   "homepage": "https://github.com/osdoc-dev/avenger#readme",
@@ -31,7 +31,7 @@
     "node": "^12.0.0 || >= 14.0.0"
   },
   "dependencies": {
-    "@osdoc-dev/avenger-core": "^0.2.3",
+    "@osdoc-dev/avenger-core": "^0.2.4",
     "@osdoc-dev/avenger-shared": "^0.2.2",
     "@osdoc-dev/avenger-utils": "^0.2.0",
     "commander": "^7.2.0",
